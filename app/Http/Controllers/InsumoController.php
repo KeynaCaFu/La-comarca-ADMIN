@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Insumo;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class InsumoController extends Controller
 {
