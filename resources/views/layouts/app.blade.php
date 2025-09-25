@@ -7,43 +7,82 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <!-- CSS Personalizado -->
+    <!-- CSS Personalizado La Comarca -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                <i class="fas fa-utensils"></i> La Comarca Admin
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link {{ request()->routeIs('insumos*') ? 'active' : '' }}" href="{{ route('insumos.index') }}">
-                    <i class="fas fa-boxes"></i> Insumos
-                </a>
-                <a class="nav-link {{ request()->routeIs('proveedores*') ? 'active' : '' }}" href="{{ route('proveedores.index') }}">
-                    <i class="fas fa-truck"></i> Proveedores
-                </a>
+    <!-- Container principal con diseño La Comarca -->
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-utensils"></i> La Comarca</h3>
             </div>
-        </div>
-    </nav>
-
-    <div class="container mt-4">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('insumos.index') }}" class="{{ request()->routeIs('insumos*') ? 'active' : '' }}">
+                            <i class="fas fa-boxes"></i> Insumos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('proveedores.index') }}" class="{{ request()->routeIs('proveedores*') ? 'active' : '' }}">
+                            <i class="fas fa-truck"></i> Proveedores
+                        </a>
+                    </li>
+                </ul>
             </div>
-        @endif
+        </nav>
 
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1>@yield('title', 'Dashboard')</h1>
+                <div class="user-info">
+                    <i class="fas fa-user-circle fa-2x"></i>
+                    <span>Administrador</span>
+                </div>
             </div>
-        @endif
 
-        @yield('content')
+            <!-- Alertas de Bootstrap/Laravel -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <!-- Contenido específico de cada página -->
+            <div class="fade-in">
+                @yield('content')
+            </div>
+        </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
