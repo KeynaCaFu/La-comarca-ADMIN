@@ -2,6 +2,10 @@
 
 @section('title', 'Gestión de Proveedores')
 
+@push('styles')
+    <link href="{{ asset('css/pages/proveedores.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1><i class="fas fa-truck"></i> Gestión de Proveedores</h1>

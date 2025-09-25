@@ -1,0 +1,129 @@
+/* ========================================
+   LA COMARCA - ESTILOS PERSONALIZADOS
+   ======================================== */
+
+/* Variables CSS personalizadas */
+:root {
+    --primary-color: #28a745;
+    --secondary-color: #6c757d;
+    --accent-color: #fd7e14;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar personalizada */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.375rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), #20c997);
+    color: white;
+    border-bottom: none;
+}
+
+/* Botones personalizados */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #1e7e34;
+    border-color: #1c7430;
+}
+
+/* Tablas */
+.table {
+    background-color: white;
+    border-radius: 0.375rem;
+    overflow: hidden;
+}
+
+.table-dark {
+    background: linear-gradient(135deg, var(--dark-color), #495057);
+}
+
+/* Badges */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Alertas */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+/* Estados de insumos */
+.estado-disponible {
+    color: var(--primary-color);
+}
+
+.estado-agotado {
+    color: var(--danger-color);
+}
+
+.estado-vencido {
+    color: var(--warning-color);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .table-responsive {
+        border-radius: 0.375rem;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Utilidades */
+.shadow-custom {
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color), #20c997);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

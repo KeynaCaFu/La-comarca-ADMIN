@@ -2,6 +2,10 @@
 
 <?php $__env->startSection('title', 'Gestión de Proveedores'); ?>
 
+<?php $__env->startPush('styles'); ?>
+    <link href="<?php echo e(asset('css/pages/proveedores.css')); ?>" rel="stylesheet">
+<?php $__env->stopPush(); ?>
+
 <?php $__env->startSection('content'); ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1><i class="fas fa-truck"></i> Gestión de Proveedores</h1>
