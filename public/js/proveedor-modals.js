@@ -73,7 +73,7 @@ class ProveedorModals {
         document.body.style.overflow = 'hidden';
         
         try {
-            const response = await fetch(`/proveedores/${proveedorId}/show-modal`);
+            const response = await fetch(`/proveedor/${proveedorId}/show-modal`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -105,7 +105,7 @@ class ProveedorModals {
         document.body.style.overflow = 'hidden';
         
         try {
-            const response = await fetch(`/proveedores/${proveedorId}/edit-modal`);
+            const response = await fetch(`/proveedor/${proveedorId}/edit-modal`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

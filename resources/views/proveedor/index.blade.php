@@ -66,7 +66,7 @@
                             <button type="button" class="btn btn-warning btn-sm" title="Editar" onclick="openEditProveedorModal({{ $proveedor->proveedor_id }})">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <form action="{{ route('proveedores.destroy', $proveedor->proveedor_id) }}" method="POST" class="d-inline">
+                            <form action="{{ route('proveedor.destroy', $proveedor->proveedor_id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" 
@@ -114,7 +114,7 @@
             <span class="close" onclick="closeProveedorModal('createProveedorModal')">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="createProveedorForm" action="{{ route('proveedores.store') }}" method="POST">
+            <form id="createProveedorForm" action="{{ route('proveedor.store') }}" method="POST">
                 @csrf
                 
                 <div class="mb-3">

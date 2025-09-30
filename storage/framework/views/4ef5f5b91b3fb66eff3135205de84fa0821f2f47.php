@@ -67,7 +67,7 @@
                             <button type="button" class="btn btn-warning btn-sm" title="Editar" onclick="openEditProveedorModal(<?php echo e($proveedor->proveedor_id); ?>)">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <form action="<?php echo e(route('proveedores.destroy', $proveedor->proveedor_id)); ?>" method="POST" class="d-inline">
+                            <form action="<?php echo e(route('proveedor.destroy', $proveedor->proveedor_id)); ?>" method="POST" class="d-inline">
                                 <?php echo csrf_field(); ?>
                                 <?php echo method_field('DELETE'); ?>
                                 <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" 
@@ -115,7 +115,7 @@
             <span class="close" onclick="closeProveedorModal('createProveedorModal')">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="createProveedorForm" action="<?php echo e(route('proveedores.store')); ?>" method="POST">
+            <form id="createProveedorForm" action="<?php echo e(route('proveedor.store')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 
                 <div class="mb-3">

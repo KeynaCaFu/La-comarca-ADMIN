@@ -34,8 +34,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo e(route('proveedores.index')); ?>" class="<?php echo e(request()->routeIs('proveedores*') ? 'active' : ''); ?>">
+                        <a href="<?php echo e(route('proveedor.index')); ?>" class="<?php echo e(request()->routeIs('proveedor*') ? 'active' : ''); ?>">
                             <i class="fas fa-truck"></i> Proveedores
+                        </a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="<?php echo e(route('welcome')); ?>" class="text-danger">
+                            <i class="fas fa-sign-out-alt"></i> Salir
                         </a>
                     </li>
                 </ul>
