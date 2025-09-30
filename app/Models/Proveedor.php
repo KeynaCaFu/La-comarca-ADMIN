@@ -11,7 +11,9 @@ class Proveedor extends Model
 
     protected $table = 'tbproveedor';
     protected $primaryKey = 'proveedor_id';
-    public $timestamps = true;
+    
+    // Deshabilitar timestamps porque la tabla no tiene columnas created_at y updated_at
+    public $timestamps = false;
 
     protected $fillable = [
         'nombre',
