@@ -3,7 +3,7 @@
         'name' => 'laravel/lacomarca-admin',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'b1e4706f51d683e8a2304af3819a1ea4161fb6d0',
+        'reference' => '5376b3842fc414b0a07aa68deba681a10d608e17',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -394,7 +394,7 @@
         'laravel/lacomarca-admin' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'b1e4706f51d683e8a2304af3819a1ea4161fb6d0',
+            'reference' => '5376b3842fc414b0a07aa68deba681a10d608e17',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
