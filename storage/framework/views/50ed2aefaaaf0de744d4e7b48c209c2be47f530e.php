@@ -10,6 +10,7 @@
     <!-- CSS Personalizado La Comarca -->
     <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/fixes.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/modals.css')); ?>" rel="stylesheet">
     <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>

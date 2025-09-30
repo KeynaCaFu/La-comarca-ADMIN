@@ -12,7 +12,8 @@ class ProveedorController extends Controller
     public function index()
     {
         $proveedores = Proveedor::with('insumos')->get();
-        return view('proveedor.index', compact('proveedores'));
+        $insumos = Insumo::where('estado', 'Disponible')->get();
+        return view('proveedor.index', compact('proveedores', 'insumos'));
     }
 
     public function create()
@@ -38,6 +39,15 @@ class ProveedorController extends Controller
         // Sincronizar insumos
         if ($request->has('insumos')) {
             $proveedor->insumos()->sync($request->insumos);
+        }
+
+        // Respuesta para AJAX o redirección normal
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Proveedor creado exitosamente.',
+                'proveedor' => $proveedor
+            ]);
         }
 
         return redirect()->route('proveedores.index')
@@ -75,6 +85,15 @@ class ProveedorController extends Controller
         // Sincronizar insumos
         $proveedor->insumos()->sync($request->insumos ?? []);
 
+        // Respuesta para AJAX o redirección normal
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Proveedor actualizado exitosamente.',
+                'proveedor' => $proveedor
+            ]);
+        }
+
         return redirect()->route('proveedores.index')
             ->with('success', 'Proveedor actualizado exitosamente.');
     }
@@ -87,5 +106,20 @@ class ProveedorController extends Controller
 
         return redirect()->route('proveedores.index')
             ->with('success', 'Proveedor eliminado exitosamente.');
+    }
+
+    // Método para cargar el contenido del modal de detalles
+    public function showModal($id)
+    {
+        $proveedor = Proveedor::with('insumos')->findOrFail($id);
+        return view('proveedor.partials.show-modal', compact('proveedor'));
+    }
+
+    // Método para cargar el contenido del modal de editar
+    public function editModal($id)
+    {
+        $proveedor = Proveedor::with('insumos')->findOrFail($id);
+        $insumos = Insumo::where('estado', 'Disponible')->get();
+        return view('proveedor.partials.edit-modal', compact('proveedor', 'insumos'));
     }
 }

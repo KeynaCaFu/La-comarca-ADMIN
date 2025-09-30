@@ -12,7 +12,8 @@ class InsumoController extends Controller
     public function index()
     {
         $insumos = Insumo::with('proveedores')->get();
-        return view('insumos.index', compact('insumos'));
+        $proveedores = Proveedor::where('estado', 'Activo')->get();
+        return view('insumos.index', compact('insumos', 'proveedores'));
     }
 
     public function create()
@@ -40,6 +41,15 @@ class InsumoController extends Controller
         // Sincronizar proveedores
         if ($request->has('proveedores')) {
             $insumo->proveedores()->sync($request->proveedores);
+        }
+
+        // Respuesta para AJAX o redirección normal
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Insumo creado exitosamente.',
+                'insumo' => $insumo
+            ]);
         }
 
         return redirect()->route('insumos.index')
@@ -79,6 +89,15 @@ class InsumoController extends Controller
         // Sincronizar proveedores
         $insumo->proveedores()->sync($request->proveedores ?? []);
 
+        // Respuesta para AJAX o redirección normal
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Insumo actualizado exitosamente.',
+                'insumo' => $insumo
+            ]);
+        }
+
         return redirect()->route('insumos.index')
             ->with('success', 'Insumo actualizado exitosamente.');
     }
@@ -91,5 +110,20 @@ class InsumoController extends Controller
 
         return redirect()->route('insumos.index')
             ->with('success', 'Insumo eliminado exitosamente.');
+    }
+
+    // Método para cargar el contenido del modal de detalles
+    public function showModal($id)
+    {
+        $insumo = Insumo::with('proveedores')->findOrFail($id);
+        return view('insumos.partials.show-modal', compact('insumo'));
+    }
+
+    // Método para cargar el contenido del modal de editar
+    public function editModal($id)
+    {
+        $insumo = Insumo::with('proveedores')->findOrFail($id);
+        $proveedores = Proveedor::where('estado', 'Activo')->get();
+        return view('insumos.partials.edit-modal', compact('insumo', 'proveedores'));
     }
 }
