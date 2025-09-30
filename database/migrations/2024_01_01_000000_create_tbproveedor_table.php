@@ -16,7 +16,6 @@ return new class extends Migration
             $table->text('direccion');
             $table->decimal('total_compras', 10, 2)->default(0.00);
             $table->enum('estado', ['Activo', 'Inactivo'])->default('Activo');
-            $table->timestamps();
         });
     }
 

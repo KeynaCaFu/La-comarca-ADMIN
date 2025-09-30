@@ -9,6 +9,8 @@
     
     <!-- CSS Personalizado La Comarca -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fixes.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modals.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
@@ -32,8 +34,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('proveedores.index') }}" class="{{ request()->routeIs('proveedores*') ? 'active' : '' }}">
+                        <a href="{{ route('proveedor.index') }}" class="{{ request()->routeIs('proveedor*') ? 'active' : '' }}">
                             <i class="fas fa-truck"></i> Proveedores
+                        </a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="{{ route('welcome') }}" class="text-danger">
+                            <i class="fas fa-sign-out-alt"></i> Salir
                         </a>
                     </li>
                 </ul>

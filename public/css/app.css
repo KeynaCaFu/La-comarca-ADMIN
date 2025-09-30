@@ -100,23 +100,25 @@ body {
 
 .header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ddd;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -60px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #ddd;
 }
 
 .header h1 {
-    color: var(--primary);
-    font-size: 1.6rem;
+   color: var(--primary);
+  font-size: 1.6rem;
+  padding: 18px;
+  margin-top: -122px;
 }
 
 .user-info {
    padding: 55px;
    display: flex;
    align-items: center;
-   margin-top: 7px;
+   margin-top: -16px;
 }
 
 .user-infoAdmin{

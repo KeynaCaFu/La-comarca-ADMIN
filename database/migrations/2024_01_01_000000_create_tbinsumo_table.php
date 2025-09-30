@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('cantidad');
             $table->decimal('precio', 8, 2);
             $table->enum('estado', ['Disponible', 'Agotado', 'Vencido'])->default('Disponible');
-            $table->timestamps();
         });
     }
 

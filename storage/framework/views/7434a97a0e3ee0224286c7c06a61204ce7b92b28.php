@@ -32,4 +32,4 @@
         </div>
     </body>
 </html>
-<?php /**PATH C:\xampp\htdocs\La-comarca-ADMIN\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions/views/minimal.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\Proyectos 2025 U\La-comarca-ADMIN\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions/views/minimal.blade.php ENDPATH**/ ?>

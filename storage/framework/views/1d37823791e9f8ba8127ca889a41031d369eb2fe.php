@@ -1,8 +1,8 @@
-@extends('layouts.welcome')
 
-@section('title', 'Bienvenido - La Comarca')
 
-@section('content')
+<?php $__env->startSection('title', 'Bienvenido - La Comarca'); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="welcome-card">
     <div class="logo-icon">
         <i class="fas fa-utensils"></i>
@@ -15,7 +15,7 @@
         Gestiona tu restaurante de manera eficiente y sencilla
     </p>
     
-    <a href="{{ route('dashboard') }}" class="btn-gestionar">
+    <a href="<?php echo e(route('dashboard')); ?>" class="btn-gestionar">
         <i class="fas fa-home me-2"></i>
         Gestionar mi Local
     </a>
@@ -26,4 +26,5 @@
         <i class="fas fa-chart-line" title="Reportes"></i>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.welcome', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Proyectos 2025 U\La-comarca-ADMIN\resources\views/welcome.blade.php ENDPATH**/ ?>
