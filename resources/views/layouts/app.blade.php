@@ -9,6 +9,7 @@
     
     <!-- CSS Personalizado La Comarca -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fixes.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
