@@ -6,42 +6,85 @@
     <title><?php echo $__env->yieldContent('title', 'La Comarca - Admin'); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS Personalizado La Comarca -->
+    <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="<?php echo e(url('/')); ?>">
-                <i class="fas fa-utensils"></i> La Comarca Admin
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link <?php echo e(request()->routeIs('insumos*') ? 'active' : ''); ?>" href="<?php echo e(route('insumos.index')); ?>">
-                    <i class="fas fa-boxes"></i> Insumos
-                </a>
-                <a class="nav-link <?php echo e(request()->routeIs('proveedores*') ? 'active' : ''); ?>" href="<?php echo e(route('proveedores.index')); ?>">
-                    <i class="fas fa-truck"></i> Proveedores
-                </a>
+    <!-- Container principal con diseño La Comarca -->
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-utensils"></i> La Comarca</h3>
             </div>
-        </div>
-    </nav>
-
-    <div class="container mt-4">
-        <?php if(session('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle"></i> <?php echo e(session('success')); ?>
-
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="<?php echo e(url('/')); ?>" class="<?php echo e(request()->is('/') ? 'active' : ''); ?>">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo e(route('insumos.index')); ?>" class="<?php echo e(request()->routeIs('insumos*') ? 'active' : ''); ?>">
+                            <i class="fas fa-boxes"></i> Insumos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo e(route('proveedores.index')); ?>" class="<?php echo e(request()->routeIs('proveedores*') ? 'active' : ''); ?>">
+                            <i class="fas fa-truck"></i> Proveedores
+                        </a>
+                    </li>
+                </ul>
             </div>
-        <?php endif; ?>
+        </nav>
 
-        <?php if(session('error')): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle"></i> <?php echo e(session('error')); ?>
-
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1><?php echo $__env->yieldContent('title', 'Dashboard'); ?></h1>
+                <div class="user-info">
+                    <i class="fas fa-user-circle fa-2x"></i>
+                    <span>Administrador</span>
+                </div>
             </div>
-        <?php endif; ?>
 
-        <?php echo $__env->yieldContent('content'); ?>
+            <!-- Alertas de Bootstrap/Laravel -->
+            <?php if(session('success')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle"></i> <?php echo e(session('success')); ?>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle"></i> <?php echo e(session('error')); ?>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <?php if($errors->any()): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <ul class="mb-0">
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- Contenido específico de cada página -->
+            <div class="fade-in">
+                <?php echo $__env->yieldContent('content'); ?>
+            </div>
+        </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
