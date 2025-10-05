@@ -4,6 +4,7 @@
 
 <?php $__env->startPush('styles'); ?>
 <link href="<?php echo e(asset('css/validations.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/pages/insumos.css')); ?>" rel="stylesheet">
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -60,7 +61,7 @@
                             <?php endif; ?>
                         </td>
                         <td><?php echo e($insumo->stock_minimo); ?></td>
-                        <td>$<?php echo e(number_format($insumo->precio, 2)); ?></td>
+                        <td>₡<?php echo e(number_format($insumo->precio, 2)); ?></td>
                         <td>
                             <?php if($insumo->fecha_vencimiento): ?>
                                 <?php
@@ -85,7 +86,7 @@
                         <td>
                             <?php if($insumo->proveedores->count() > 0): ?>
                                 <?php $__currentLoopData = $insumo->proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <span class="badge bg-info"><?php echo e($proveedor->nombre); ?></span>
+                                    <span class="badge "><?php echo e($proveedor->nombre); ?></span>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php else: ?>
                                 <span class="text-muted">Sin proveedores</span>
@@ -203,7 +204,7 @@
                         <div class="mb-3">
                             <label for="create_precio" class="form-label">Precio *</label>
                             <div class="input-group">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">₡</span>
                                 <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" required min="0.01" placeholder="0.00">
                             </div>
                         </div>
