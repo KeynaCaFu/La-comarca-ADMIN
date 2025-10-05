@@ -10,15 +10,77 @@ use Illuminate\Routing\Controller;
 
 class InsumoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $insumos = Insumo::with('proveedores')->get();
-        $proveedores = Proveedor::where('estado', 'Activo')->get(); // Agregar esta línea
+        $query = Insumo::with('proveedores');
+        
+        // Filtro simple por nombre
+        if ($request->filled('buscar')) {
+            $query->where('nombre', 'like', '%' . $request->buscar . '%');
+        }
+        
+        // Filtro por estado
+        if ($request->filled('estado') && $request->estado !== 'todos') {
+            $query->where('estado', $request->estado);
+        }
+        
+        // Filtro por vencimiento (opciones simples)
+        if ($request->filled('vencimiento') && $request->vencimiento !== 'todos') {
+            $hoy = Carbon::now();
+            
+            switch ($request->vencimiento) {
+                case 'vencidos':
+                    $query->where('fecha_vencimiento', '<', $hoy);
+                    break;
+                case 'por_vencer':
+                    $query->whereBetween('fecha_vencimiento', [$hoy, $hoy->copy()->addDays(30)]);
+                    break;
+                case 'buenos':
+                    $query->where('fecha_vencimiento', '>', $hoy->copy()->addDays(30))
+                          ->orWhereNull('fecha_vencimiento');
+                    break;
+            }
+        }
+        
+        // Filtro por stock
+        if ($request->filled('stock') && $request->stock !== 'todos') {
+            switch ($request->stock) {
+                case 'bajo':
+                    $query->whereRaw('stock_actual <= stock_minimo');
+                    break;
+                case 'normal':
+                    $query->whereRaw('stock_actual > stock_minimo');
+                    break;
+                case 'agotado':
+                    $query->where('stock_actual', 0);
+                    break;
+            }
+        }
+        
+        $insumos = $query->orderBy('nombre')->get();
+        $proveedores = Proveedor::where('estado', 'Activo')->get();
         
         // Verificar insumos vencidos o próximos a vencer
         $this->checkExpiringProducts($insumos);
         
-        return view('insumos.index', compact('insumos', 'proveedores')); // Agregar 'proveedores'
+        // Contar totales para mostrar en los filtros
+        $totales = $this->contarTotales();
+        
+        return view('insumos.index', compact('insumos', 'proveedores', 'totales'));
+    }
+    
+    private function contarTotales()
+    {
+        $hoy = Carbon::now();
+        
+        return [
+            'todos' => Insumo::count(),
+            'disponibles' => Insumo::where('estado', 'Disponible')->count(),
+            'agotados' => Insumo::where('estado', 'Agotado')->count(),
+            'vencidos' => Insumo::where('estado', 'Vencido')->count(),
+            'stock_bajo' => Insumo::whereRaw('stock_actual <= stock_minimo')->count(),
+            'por_vencer' => Insumo::whereBetween('fecha_vencimiento', [$hoy, $hoy->copy()->addDays(30)])->count(),
+        ];
     }
 
     public function create()
@@ -29,27 +91,86 @@ class InsumoController extends Controller
 
     public function store(Request $request)
     {
-        // Validaciones personalizadas
+        // Validaciones mejoradas
         $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255|unique:tbinsumo,nombre',
-            'stock_actual' => 'required|integer|min:0',
-            'stock_minimo' => 'required|integer|min:0',
-            'cantidad' => 'required|integer|min:1',
-            'precio' => 'required|numeric|min:0.01',
-            'unidad_medida' => 'required|string|max:50',
+            'nombre' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:tbinsumo,nombre',
+                'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s\-\.]+$/' // Solo letras, espacios, guiones y puntos
+            ],
+            'stock_actual' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:999999'
+            ],
+            'stock_minimo' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:999999'
+            ],
+            'cantidad' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:999999'
+            ],
+            'precio' => [
+                'required',
+                'numeric',
+                'min:0.01',
+                'max:999999.99'
+            ],
+            'unidad_medida' => [
+                'required',
+                'string',
+                'in:kg,gramos,litros,ml,unidades,metros,cm,cajas,bolsas,botellas,latas,paquetes'
+            ],
             'fecha_vencimiento' => 'nullable|date|after:today',
             'estado' => 'required|in:Disponible,Agotado,Vencido',
             'proveedores' => 'array',
             'proveedores.*' => 'exists:tbproveedor,proveedor_id'
         ], [
-            // Mensajes personalizados
+            // Mensajes personalizados mejorados
             'nombre.required' => 'El nombre del insumo es obligatorio',
+            'nombre.regex' => 'El nombre solo puede contener letras, espacios, guiones y puntos',
             'nombre.unique' => 'Ya existe un insumo con este nombre',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres',
+            
+            'stock_actual.required' => 'El stock actual es obligatorio',
+            'stock_actual.integer' => 'El stock actual debe ser un número entero',
             'stock_actual.min' => 'El stock actual no puede ser negativo',
+            'stock_actual.max' => 'El stock actual no puede ser mayor a 999,999',
+            
+            'stock_minimo.required' => 'El stock mínimo es obligatorio',
+            'stock_minimo.integer' => 'El stock mínimo debe ser un número entero',
             'stock_minimo.min' => 'El stock mínimo no puede ser negativo',
+            'stock_minimo.max' => 'El stock mínimo no puede ser mayor a 999,999',
+            
+            'cantidad.required' => 'La cantidad es obligatoria',
+            'cantidad.integer' => 'La cantidad debe ser un número entero',
+            'cantidad.min' => 'La cantidad debe ser al menos 1',
+            'cantidad.max' => 'La cantidad no puede ser mayor a 999,999',
+            
+            'precio.required' => 'El precio es obligatorio',
+            'precio.numeric' => 'El precio debe ser un número válido',
             'precio.min' => 'El precio debe ser mayor a 0',
+            'precio.max' => 'El precio no puede ser mayor a 999,999.99',
+            
+            'unidad_medida.required' => 'La unidad de medida es obligatoria',
+            'unidad_medida.in' => 'Debe seleccionar una unidad de medida válida',
+            
+            'fecha_vencimiento.date' => 'La fecha de vencimiento debe ser una fecha válida',
             'fecha_vencimiento.after' => 'La fecha de vencimiento debe ser posterior a hoy',
+            
+            'estado.required' => 'El estado es obligatorio',
             'estado.in' => 'El estado debe ser: Disponible, Agotado o Vencido',
+            
+            'proveedores.array' => 'Los proveedores deben ser una lista válida',
+            'proveedores.*.exists' => 'Uno o más proveedores seleccionados no existen',
         ]);
 
         // Validaciones de lógica de negocio
@@ -92,21 +213,83 @@ class InsumoController extends Controller
     {
         $insumo = Insumo::findOrFail($id);
 
-        // Validaciones (excluyendo el registro actual)
+        // Validaciones mejoradas (excluyendo el registro actual)
         $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255|unique:tbinsumo,nombre,' . $id . ',insumo_id',
-            'stock_actual' => 'required|integer|min:0',
-            'stock_minimo' => 'required|integer|min:0',
-            'cantidad' => 'required|integer|min:1',
-            'precio' => 'required|numeric|min:0.01',
-            'unidad_medida' => 'required|string|max:50',
+            'nombre' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:tbinsumo,nombre,' . $id . ',insumo_id',
+                'regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s\-\.]+$/'
+            ],
+            'stock_actual' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:999999'
+            ],
+            'stock_minimo' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:999999'
+            ],
+            'cantidad' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:999999'
+            ],
+            'precio' => [
+                'required',
+                'numeric',
+                'min:0.01',
+                'max:999999.99'
+            ],
+            'unidad_medida' => [
+                'required',
+                'string',
+                'in:kg,gramos,litros,ml,unidades,metros,cm,cajas,bolsas,botellas,latas,paquetes'
+            ],
             'fecha_vencimiento' => 'nullable|date|after:today',
             'estado' => 'required|in:Disponible,Agotado,Vencido',
             'proveedores' => 'array',
             'proveedores.*' => 'exists:tbproveedor,proveedor_id'
         ], [
+            // Mismos mensajes personalizados que en store()
+            'nombre.required' => 'El nombre del insumo es obligatorio',
+            'nombre.regex' => 'El nombre solo puede contener letras, espacios, guiones y puntos',
             'nombre.unique' => 'Ya existe otro insumo con este nombre',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres',
+            
+            'stock_actual.required' => 'El stock actual es obligatorio',
+            'stock_actual.integer' => 'El stock actual debe ser un número entero',
+            'stock_actual.min' => 'El stock actual no puede ser negativo',
+            'stock_actual.max' => 'El stock actual no puede ser mayor a 999,999',
+            
+            'stock_minimo.required' => 'El stock mínimo es obligatorio',
+            'stock_minimo.integer' => 'El stock mínimo debe ser un número entero',
+            'stock_minimo.min' => 'El stock mínimo no puede ser negativo',
+            'stock_minimo.max' => 'El stock mínimo no puede ser mayor a 999,999',
+            
+            'cantidad.required' => 'La cantidad es obligatoria',
+            'cantidad.integer' => 'La cantidad debe ser un número entero',
+            'cantidad.min' => 'La cantidad debe ser al menos 1',
+            'cantidad.max' => 'La cantidad no puede ser mayor a 999,999',
+            
+            'precio.required' => 'El precio es obligatorio',
+            'precio.numeric' => 'El precio debe ser un número válido',
+            'precio.min' => 'El precio debe ser mayor a 0',
+            'precio.max' => 'El precio no puede ser mayor a 999,999.99',
+            
+            'unidad_medida.required' => 'La unidad de medida es obligatoria',
+            'unidad_medida.in' => 'Debe seleccionar una unidad de medida válida',
+            
+            'fecha_vencimiento.date' => 'La fecha de vencimiento debe ser una fecha válida',
             'fecha_vencimiento.after' => 'La fecha de vencimiento debe ser posterior a hoy',
+            
+            'estado.required' => 'El estado es obligatorio',
+            'estado.in' => 'El estado debe ser: Disponible, Agotado o Vencido',
         ]);
 
         // Validaciones de lógica de negocio

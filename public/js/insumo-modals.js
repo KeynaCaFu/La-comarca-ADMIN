@@ -88,7 +88,7 @@ class InsumoModals {
     }
 
     // Abrir modal de editar
-    async openEditModal(insumoId) {
+    openEditModal(insumoId) {
         const modal = document.getElementById('editModal');
         const content = document.getElementById('editModalContent');
         
@@ -99,24 +99,26 @@ class InsumoModals {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
         
-        try {
-            const response = await fetch(`/insumos/${insumoId}/edit-modal`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const html = await response.text();
-            content.innerHTML = html;
-        } catch (error) {
-            console.error('Error loading modal content:', error);
-            content.innerHTML = `
-                <div class="error">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Error al cargar el formulario de edición
-                    <br><small>Por favor, inténtalo de nuevo</small>
-                </div>
-            `;
-        }
+        fetch(`/insumos/${insumoId}/edit-modal`)
+            .then(response => response.text())
+            .then(html => {
+                content.innerHTML = html;
+                
+                // Configurar validaciones después de cargar el contenido
+                if (typeof setupEditValidations === 'function') {
+                    setupEditValidations();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading modal content:', error);
+                content.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error al cargar el formulario de edición
+                        <br><small>Por favor, inténtalo de nuevo</small>
+                    </div>
+                `;
+            });
     }
 
     // Cerrar modal
@@ -125,6 +127,13 @@ class InsumoModals {
         if (modal) {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
+        }
+        
+        // Limpiar validaciones cuando se cierre el modal
+        if (modalId === 'editModal' && typeof clearValidations === 'function') {
+            clearValidations('edit');
+        } else if (modalId === 'createModal' && typeof clearValidations === 'function') {
+            clearValidations('create');
         }
     }
 
@@ -324,10 +333,23 @@ function openShowModal(insumoId) {
     }
 }
 
-function openEditModal(insumoId) {
-    if (window.insumoModals) {
-        window.insumoModals.openEditModal(insumoId);
-    }
+// Función para abrir el modal de editar
+function openEditModal(id) {
+    fetch(`/insumos/${id}/edit-modal`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('editModalContent').innerHTML = html;
+            document.getElementById('editModal').style.display = 'block';
+            
+            // Configurar validaciones después de cargar el contenido
+            if (typeof setupEditValidations === 'function') {
+                setupEditValidations();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error al cargar el formulario de edición', 'error');
+        });
 }
 
 function closeModal(modalId) {

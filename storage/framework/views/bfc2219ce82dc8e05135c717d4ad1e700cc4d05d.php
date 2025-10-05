@@ -24,7 +24,11 @@
             <div class="sidebar-menu">
                 <ul>
                     <li>
+<<<<<<< HEAD
+                        <a href="<?php echo e(url('/')); ?>" class="<?php echo e(request()->is('/') ? 'active' : ''); ?>">
+=======
                         <a href="<?php echo e(route('dashboard')); ?>" class="<?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>">
+>>>>>>> main
                             <i class="fas fa-home"></i> Dashboard
                         </a>
                     </li>
