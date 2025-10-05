@@ -24,7 +24,7 @@
             <div class="sidebar-menu">
                 <ul>
                     <li>
-                        <a href="<?php echo e(route('dashboard')); ?>" class="<?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>">
+                        <a href="<?php echo e(url('/')); ?>" class="<?php echo e(request()->is('/') ? 'active' : ''); ?>">
                             <i class="fas fa-home"></i> Dashboard
                         </a>
                     </li>
@@ -97,4 +97,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
-</html><?php /**PATH C:\xampp\htdocs\Proyectos 2025 U\La-comarca-ADMIN\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\xampp\htdocs\La-comarca-ADMIN\resources\views/layouts/app.blade.php ENDPATH**/ ?>
