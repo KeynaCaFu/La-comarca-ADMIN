@@ -1,4 +1,4 @@
-<form id="editProveedorForm" action="<?php echo e(route('proveedores.update', $proveedor->proveedor_id)); ?>" method="POST">
+<form id="editProveedorForm" action="<?php echo e(route('proveedor.update', $proveedor->proveedor_id)); ?>" method="POST">
     <?php echo csrf_field(); ?>
     <?php echo method_field('PUT'); ?>
     
@@ -34,7 +34,7 @@
             <div class="mb-3">
                 <label for="edit_proveedor_total_compras" class="form-label">Total de Compras *</label>
                 <div class="input-group">
-                    <span class="input-group-text">$</span>
+                    <span class="input-group-text">₡</span>
                     <input type="number" step="0.01" class="form-control" id="edit_proveedor_total_compras" name="total_compras" required value="<?php echo e($proveedor->total_compras); ?>" min="0">
                 </div>
             </div>
@@ -54,13 +54,14 @@
     
     <div class="mb-3">
         <label class="form-label">Insumos que Provee <span class="info-tooltip" data-tooltip="Seleccione los insumos que este proveedor puede suministrar">ℹ️</span></label>
+        
         <div class="border p-3 rounded" style="background-color: white; border-radius: 10px; max-height: 200px; overflow-y: auto;">
             <?php $__currentLoopData = $insumos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $insumo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="insumos[]" value="<?php echo e($insumo->insumo_id); ?>" id="edit_proveedor_insumo<?php echo e($insumo->insumo_id); ?>"
                        <?php echo e(in_array($insumo->insumo_id, $proveedor->insumos->pluck('insumo_id')->toArray()) ? 'checked' : ''); ?>>
                 <label class="form-check-label" for="edit_proveedor_insumo<?php echo e($insumo->insumo_id); ?>">
-                    <strong><?php echo e($insumo->nombre); ?></strong> - $<?php echo e(number_format($insumo->precio, 2)); ?>
+                    <strong><?php echo e($insumo->nombre); ?></strong> - ₡<?php echo e(number_format($insumo->precio, 2)); ?>
 
                     <br><small class="text-muted"><?php echo e($insumo->unidad_medida); ?> | Stock: <?php echo e($insumo->stock_actual); ?></small>
                 </label>

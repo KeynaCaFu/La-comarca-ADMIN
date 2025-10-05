@@ -60,7 +60,7 @@
                             <?php endif; ?>
                         </td>
                         <td><?php echo e($insumo->stock_minimo); ?></td>
-                        <td>$<?php echo e(number_format($insumo->precio, 2)); ?></td>
+                        <td>₡<?php echo e(number_format($insumo->precio, 2)); ?></td>
                         <td>
                             <?php if($insumo->fecha_vencimiento): ?>
                                 <?php
@@ -203,7 +203,7 @@
                         <div class="mb-3">
                             <label for="create_precio" class="form-label">Precio *</label>
                             <div class="input-group">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">₡</span>
                                 <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" required min="0.01" placeholder="0.00">
                             </div>
                         </div>

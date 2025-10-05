@@ -43,7 +43,7 @@
             <div class="mb-3">
                 <label for="edit_precio" class="form-label">Precio *</label>
                 <div class="input-group">
-                    <span class="input-group-text">$</span>
+                    <span class="input-group-text">₡</span>
                     <input type="number" step="0.01" class="form-control" id="edit_precio" name="precio" required value="<?php echo e($insumo->precio); ?>" min="0">
                 </div>
             </div>
