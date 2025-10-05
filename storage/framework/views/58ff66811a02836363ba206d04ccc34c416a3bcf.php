@@ -61,7 +61,7 @@
                     <i class="fas fa-dollar-sign"></i>
                 </div>
                 <div class="stat-info">
-                    <h3 id="valorTotal">$0</h3>
+                    <h3 id="valorTotal">₡0</h3>
                     <p>Valor Total Inventario</p>
                 </div>
                 <div class="stat-trend">
