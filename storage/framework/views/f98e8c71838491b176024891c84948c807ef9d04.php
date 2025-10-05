@@ -338,19 +338,53 @@
             <span class="close" onclick="closeModal('createModal')">&times;</span>
         </div>
         <div class="modal-body">
+            <!-- Mostrar errores de validación -->
+            <div id="createErrors" class="alert alert-danger d-none">
+                <ul class="mb-0" id="createErrorsList"></ul>
+            </div>
+            
             <form id="createForm" action="<?php echo e(route('insumos.store')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="create_nombre" class="form-label">Nombre del Insumo *</label>
-                            <input type="text" class="form-control" id="create_nombre" name="nombre" required placeholder="Ej: Harina de Trigo">
+                            <input type="text" class="form-control" id="create_nombre" name="nombre" required 
+                                   placeholder="Ej: Harina de Trigo" 
+                                   pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s\-\.]+$"
+                                   title="Solo se permiten letras, espacios, guiones y puntos"
+                                   maxlength="255">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Solo letras, espacios, guiones y puntos</small>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="create_unidad_medida" class="form-label">Unidad de Medida *</label>
-                            <input type="text" class="form-control" id="create_unidad_medida" name="unidad_medida" required placeholder="Ej: kg, litro, unidad">
+                            <select class="form-select" id="create_unidad_medida" name="unidad_medida" required>
+                                <option value="">Seleccionar unidad...</option>
+                                <optgroup label="Peso">
+                                    <option value="kg">Kilogramos (kg)</option>
+                                    <option value="gramos">Gramos (g)</option>
+                                </optgroup>
+                                <optgroup label="Volumen">
+                                    <option value="litros">Litros (L)</option>
+                                    <option value="ml">Mililitros (ml)</option>
+                                </optgroup>
+                                <optgroup label="Longitud">
+                                    <option value="metros">Metros (m)</option>
+                                    <option value="cm">Centímetros (cm)</option>
+                                </optgroup>
+                                <optgroup label="Cantidad">
+                                    <option value="unidades">Unidades</option>
+                                    <option value="cajas">Cajas</option>
+                                    <option value="bolsas">Bolsas</option>
+                                    <option value="botellas">Botellas</option>
+                                    <option value="latas">Latas</option>
+                                    <option value="paquetes">Paquetes</option>
+                                </optgroup>
+                            </select>
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                 </div>
@@ -359,19 +393,31 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="create_stock_actual" class="form-label">Stock Actual *</label>
-                            <input type="number" class="form-control" id="create_stock_actual" name="stock_actual" required value="0" min="0">
+                            <input type="number" class="form-control" id="create_stock_actual" name="stock_actual" 
+                                   required value="0" min="0" max="999999" step="1"
+                                   title="Solo números enteros del 0 al 999,999">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Números enteros del 0 al 999,999</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="create_stock_minimo" class="form-label">Stock Mínimo *</label>
-                            <input type="number" class="form-control" id="create_stock_minimo" name="stock_minimo" required value="0" min="0">
+                            <input type="number" class="form-control" id="create_stock_minimo" name="stock_minimo" 
+                                   required value="0" min="0" max="999999" step="1"
+                                   title="Solo números enteros del 0 al 999,999">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Números enteros del 0 al 999,999</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="create_cantidad" class="form-label">Cantidad *</label>
-                            <input type="number" class="form-control" id="create_cantidad" name="cantidad" required value="1" min="1">
+                            <input type="number" class="form-control" id="create_cantidad" name="cantidad" 
+                                   required value="1" min="1" max="999999" step="1"
+                                   title="Solo números enteros del 1 al 999,999">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Números enteros del 1 al 999,999</small>
                         </div>
                     </div>
                 </div>
@@ -382,14 +428,22 @@
                             <label for="create_precio" class="form-label">Precio *</label>
                             <div class="input-group">
                                 <span class="input-group-text">₡</span>
-                                <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" required min="0.01" placeholder="0.00">
+                                <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" 
+                                       required min="0.01" max="999999.99" placeholder="0.00"
+                                       title="Precio válido entre ₡0.01 y ₡999,999.99">
                             </div>
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Precio entre ₡0.01 y ₡999,999.99</small>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="create_fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
-                            <input type="date" class="form-control" id="create_fecha_vencimiento" name="fecha_vencimiento">
+                            <input type="date" class="form-control" id="create_fecha_vencimiento" name="fecha_vencimiento"
+                                   min="<?php echo e(date('Y-m-d', strtotime('+1 day'))); ?>"
+                                   title="La fecha debe ser posterior a hoy">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Opcional - debe ser posterior a hoy</small>
                         </div>
                     </div>
                 </div>
@@ -397,10 +451,12 @@
                 <div class="mb-3">
                     <label for="create_estado" class="form-label">Estado *</label>
                     <select class="form-select" id="create_estado" name="estado" required>
-                        <option value="Disponible">Disponible</option>
-                        <option value="Agotado">Agotado</option>
-                        <option value="Vencido">Vencido</option>
+                        <option value="">Seleccionar estado...</option>
+                        <option value="Disponible">✅ Disponible</option>
+                        <option value="Agotado">❌ Agotado</option>
+                        <option value="Vencido">💀 Vencido</option>
                     </select>
+                    <div class="invalid-feedback"></div>
                 </div>
 
                 <div class="mb-3">
@@ -408,7 +464,8 @@
                     <div class="border p-3 rounded">
                         <?php $__currentLoopData = $proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="proveedores[]" value="<?php echo e($proveedor->proveedor_id); ?>" id="create_proveedor<?php echo e($proveedor->proveedor_id); ?>">
+                            <input class="form-check-input" type="checkbox" name="proveedores[]" 
+                                   value="<?php echo e($proveedor->proveedor_id); ?>" id="create_proveedor<?php echo e($proveedor->proveedor_id); ?>">
                             <label class="form-check-label" for="create_proveedor<?php echo e($proveedor->proveedor_id); ?>">
                                 <?php echo e($proveedor->nombre); ?> - <?php echo e($proveedor->telefono); ?>
 
@@ -419,6 +476,7 @@
                         <p class="text-muted">No hay proveedores activos.</p>
                         <?php endif; ?>
                     </div>
+                    <small class="form-text text-muted">Selecciona uno o más proveedores (opcional)</small>
                 </div>
 
                 <div class="modal-actions">
