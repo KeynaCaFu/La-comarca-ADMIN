@@ -23,6 +23,67 @@
         </div>
     </div>
 
+    <!-- Panel de Filtros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0"><i class="fas fa-filter me-2"></i>Filtros de Búsqueda</h6>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filtrosCollapse" aria-expanded="false">
+                            <i class="fas fa-chevron-down" id="filtrosIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse" id="filtrosCollapse">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <label for="filtroNombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="filtroNombre" placeholder="Buscar por nombre...">
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <label for="filtroEstado" class="form-label">Estado</label>
+                                <select class="form-select" id="filtroEstado">
+                                    <option value="">Todos los estados</option>
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <label for="filtroContacto" class="form-label">Contacto</label>
+                                <input type="text" class="form-control" id="filtroContacto" placeholder="Email o teléfono...">
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <label for="filtroInsumos" class="form-label">Insumos</label>
+                                <select class="form-select" id="filtroInsumos">
+                                    <option value="">Todos</option>
+                                    <option value="con-insumos">Con insumos</option>
+                                    <option value="sin-insumos">Sin insumos</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="aplicarFiltros()">
+                                        <i class="fas fa-search me-1"></i>Aplicar Filtros
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="limpiarFiltros()">
+                                        <i class="fas fa-times me-1"></i>Limpiar
+                                    </button>
+                                    <span class="text-muted small align-self-center ms-2" id="resultadosFiltro">
+                                        Mostrando todos los proveedores
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if($proveedores->count() > 0)
         <!-- Vista de tabla para pantallas grandes -->
         <div class="d-none d-lg-block">
@@ -41,7 +102,11 @@
                     </thead>
                     <tbody>
                         @foreach($proveedores as $proveedor)
-                        <tr>
+                        <tr class="proveedor-row" 
+                            data-nombre="{{ strtolower($proveedor->nombre) }}" 
+                            data-estado="{{ $proveedor->estado }}" 
+                            data-contacto="{{ strtolower($proveedor->telefono . ' ' . $proveedor->correo) }}" 
+                            data-insumos="{{ $proveedor->insumos->count() }}">
                             <td>{{ $proveedor->proveedor_id }}</td>
                             <td>
                                 <strong>{{ $proveedor->nombre }}</strong>
@@ -96,7 +161,11 @@
         <div class="d-lg-none">
             <div class="row g-3">
                 @foreach($proveedores as $proveedor)
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 proveedor-card-item" 
+                     data-nombre="{{ strtolower($proveedor->nombre) }}" 
+                     data-estado="{{ $proveedor->estado }}" 
+                     data-contacto="{{ strtolower($proveedor->telefono . ' ' . $proveedor->correo) }}" 
+                     data-insumos="{{ $proveedor->insumos->count() }}">
                     <div class="card proveedor-card-responsive">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
@@ -272,9 +341,6 @@
                 <div class="mb-3">
                     <label class="form-label">Insumos que Provee <span class="info-tooltip" data-tooltip="Seleccione los insumos que este proveedor puede suministrar">ℹ️</span></label>
                     
-                    <!-- Debug temporal para verificar -->
-                    <small class="text-success d-block mb-2">✓ Insumos cargados: {{ $insumos->count() }}</small>
-                    
                     <div class="border p-3 rounded" id="createProveedorInsumosList" style="background-color: white; border-radius: 10px; max-height: 200px; overflow-y: auto;">
                         @foreach($insumos as $insumo)
                         <div class="form-check">
@@ -330,4 +396,5 @@
 @push('scripts')
 <script src="{{ asset('js/proveedor-modals.js') }}"></script>
 <script src="{{ asset('js/proveedor-validations.js') }}"></script>
+<script src="{{ asset('js/proveedor-filters.js') }}"></script>
 @endpush
