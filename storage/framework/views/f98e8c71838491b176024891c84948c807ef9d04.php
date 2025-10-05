@@ -5,6 +5,62 @@
 <?php $__env->startPush('styles'); ?>
 <link href="<?php echo e(asset('css/validations.css')); ?>" rel="stylesheet">
 <link href="<?php echo e(asset('css/pages/insumos.css')); ?>" rel="stylesheet">
+<style>
+/* Estilos simples para los filtros */
+.filtros-simples {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.filtros-simples .form-control, .filtros-simples .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.filtros-simples .form-control:focus, .filtros-simples .form-select:focus {
+    border-color: #485a1a;
+    box-shadow: 0 0 0 0.2rem rgba(72, 90, 26, 0.25);
+}
+
+.btn-filtro {
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin: 2px;
+    border: 2px solid #dee2e6;
+    background: white;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.btn-filtro:hover, .btn-filtro.activo {
+    background: #485a1a;
+    border-color: #485a1a;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.contador-filtro {
+    background: #ff9900;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.resumen-resultados {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #485a1a;
+    margin-bottom: 20px;
+}
+</style>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -15,6 +71,118 @@
     </button>
 </div>
 
+<!-- Filtros Simples -->
+<div class="filtros-simples">
+    <form method="GET" action="<?php echo e(route('insumos.index')); ?>" id="filtrosForm">
+        <div class="row align-items-end">
+            <!-- Búsqueda por nombre -->
+            <div class="col-md-4">
+                <label class="form-label fw-bold">🔍 Buscar por nombre:</label>
+                <input type="text" 
+                       class="form-control" 
+                       name="buscar" 
+                       value="<?php echo e(request('buscar')); ?>" 
+                       placeholder="Escribe el nombre del insumo..."
+                       onkeyup="buscarEnTiempoReal()">
+            </div>
+            
+            <!-- Botón de limpiar -->
+            <div class="col-md-2">
+                <button type="button" class="btn btn-outline-secondary w-100" onclick="limpiarFiltros()">
+                    <i class="fas fa-eraser"></i> Limpiar
+                </button>
+            </div>
+            
+            <!-- Mostrar total -->
+            <div class="col-md-6 text-end">
+                <span class="h5 text-muted">
+                    📦 Total: <strong><?php echo e($insumos->count()); ?></strong> de <strong><?php echo e($totales['todos']); ?></strong> insumos
+                </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Filtros Rápidos con Botones -->
+<div class="mb-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h6 class="mb-3">📊 <strong>Filtrar por Estado:</strong></h6>
+            <div class="d-flex flex-wrap">
+                <a href="<?php echo e(route('insumos.index')); ?>" 
+                   class="btn btn-filtro <?php echo e(!request('estado') ? 'activo' : ''); ?>">
+                    📋 Todos <span class="contador-filtro"><?php echo e($totales['todos']); ?></span>
+                </a>
+                
+                <a href="<?php echo e(route('insumos.index', ['estado' => 'Disponible'])); ?>" 
+                   class="btn btn-filtro <?php echo e(request('estado') == 'Disponible' ? 'activo' : ''); ?>">
+                    ✅ Disponibles <span class="contador-filtro"><?php echo e($totales['disponibles']); ?></span>
+                </a>
+                
+                <a href="<?php echo e(route('insumos.index', ['estado' => 'Agotado'])); ?>" 
+                   class="btn btn-filtro <?php echo e(request('estado') == 'Agotado' ? 'activo' : ''); ?>">
+                    ❌ Agotados <span class="contador-filtro"><?php echo e($totales['agotados']); ?></span>
+                </a>
+                
+                <a href="<?php echo e(route('insumos.index', ['estado' => 'Vencido'])); ?>" 
+                   class="btn btn-filtro <?php echo e(request('estado') == 'Vencido' ? 'activo' : ''); ?>">
+                    💀 Vencidos <span class="contador-filtro"><?php echo e($totales['vencidos']); ?></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <h6 class="mb-3">⚠️ <strong>Filtros de Alerta:</strong></h6>
+            <div class="d-flex flex-wrap">
+                <a href="<?php echo e(route('insumos.index', ['stock' => 'bajo'])); ?>" 
+                   class="btn btn-filtro <?php echo e(request('stock') == 'bajo' ? 'activo' : ''); ?>">
+                    📉 Stock Bajo <span class="contador-filtro"><?php echo e($totales['stock_bajo']); ?></span>
+                </a>
+                
+                <a href="<?php echo e(route('insumos.index', ['vencimiento' => 'por_vencer'])); ?>" 
+                   class="btn btn-filtro <?php echo e(request('vencimiento') == 'por_vencer' ? 'activo' : ''); ?>">
+                    ⏰ Por Vencer <span class="contador-filtro"><?php echo e($totales['por_vencer']); ?></span>
+                </a>
+                
+                <a href="<?php echo e(route('insumos.index', ['vencimiento' => 'vencidos'])); ?>" 
+                   class="btn btn-filtro <?php echo e(request('vencimiento') == 'vencidos' ? 'activo' : ''); ?>">
+                    💀 Ya Vencidos
+                </a>
+                
+                <a href="<?php echo e(route('insumos.index', ['vencimiento' => 'buenos'])); ?>" 
+                   class="btn btn-filtro <?php echo e(request('vencimiento') == 'buenos' ? 'activo' : ''); ?>">
+                    👍 En Buen Estado
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mostrar filtros activos -->
+<?php if(request()->hasAny(['buscar', 'estado', 'stock', 'vencimiento'])): ?>
+<div class="resumen-resultados">
+    <strong>🎯 Filtros activos:</strong>
+    <?php if(request('buscar')): ?>
+        <span class="badge bg-primary">Buscar: "<?php echo e(request('buscar')); ?>"</span>
+    <?php endif; ?>
+    <?php if(request('estado')): ?>
+        <span class="badge bg-success">Estado: <?php echo e(request('estado')); ?></span>
+    <?php endif; ?>
+    <?php if(request('stock')): ?>
+        <span class="badge bg-warning">Stock: <?php echo e(ucfirst(request('stock'))); ?></span>
+    <?php endif; ?>
+    <?php if(request('vencimiento')): ?>
+        <span class="badge bg-info">Vencimiento: <?php echo e(ucfirst(str_replace('_', ' ', request('vencimiento')))); ?></span>
+    <?php endif; ?>
+    
+    <a href="<?php echo e(route('insumos.index')); ?>" class="btn btn-sm btn-outline-secondary ms-2">
+        <i class="fas fa-times"></i> Quitar todos los filtros
+    </a>
+</div>
+<?php endif; ?>
+
 <!-- Alertas de validación automática -->
 <?php if(session('warning')): ?>
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -24,6 +192,7 @@
     </div>
 <?php endif; ?>
 
+<!-- Tabla de Insumos -->
 <div class="card">
     <div class="card-body">
         <?php if($insumos->count() > 0): ?>
@@ -33,8 +202,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Stock Actual</th>
-                        <th>Stock Mínimo</th>
+                        <th>Stock</th>
                         <th>Precio</th>
                         <th>Vencimiento</th>
                         <th>Proveedores</th>
@@ -56,12 +224,12 @@
                                 <?php echo e($insumo->stock_actual); ?>
 
                             </span>
+                            <small class="text-muted d-block">Mín: <?php echo e($insumo->stock_minimo); ?></small>
                             <?php if($insumo->stock_actual <= $insumo->stock_minimo): ?>
-                                <br><small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Stock bajo</small>
+                                <small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Stock bajo</small>
                             <?php endif; ?>
                         </td>
-                        <td><?php echo e($insumo->stock_minimo); ?></td>
-                        <td>₡<?php echo e(number_format($insumo->precio, 2)); ?></td>
+                        <td>₡<?php echo e(number_format($insumo->precio, 0)); ?></td>
                         <td>
                             <?php if($insumo->fecha_vencimiento): ?>
                                 <?php
@@ -69,15 +237,15 @@
                                     $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaVencimiento, false);
                                 ?>
                                 
-                                <span class="badge bg-<?php echo e($diasRestantes < 0 ? 'danger' : ($diasRestantes <= 7 ? 'warning' : 'success')); ?>">
+                                <span class="badge bg-<?php echo e($diasRestantes < 0 ? 'danger' : ($diasRestantes <= 30 ? 'warning' : 'success')); ?>">
                                     <?php echo e($fechaVencimiento->format('d/m/Y')); ?>
 
                                 </span>
                                 
                                 <?php if($diasRestantes < 0): ?>
-                                    <br><small class="text-danger"><i class="fas fa-skull-crossbones"></i> Vencido</small>
-                                <?php elseif($diasRestantes <= 7): ?>
-                                    <br><small class="text-warning"><i class="fas fa-clock"></i> Vence en <?php echo e($diasRestantes); ?> días</small>
+                                    <small class="text-danger d-block"><i class="fas fa-skull-crossbones"></i> Vencido</small>
+                                <?php elseif($diasRestantes <= 30): ?>
+                                    <small class="text-warning d-block"><i class="fas fa-clock"></i> <?php echo e($diasRestantes); ?> días</small>
                                 <?php endif; ?>
                             <?php else: ?>
                                 <span class="text-muted">Sin fecha</span>
@@ -85,22 +253,28 @@
                         </td>
                         <td>
                             <?php if($insumo->proveedores->count() > 0): ?>
-                                <?php $__currentLoopData = $insumo->proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $insumo->proveedores->take(2); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <span class="badge-insumo"><?php echo e($proveedor->nombre); ?></span>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php if($insumo->proveedores->count() > 2): ?>
+                                    <span class="badge bg-secondary">+<?php echo e($insumo->proveedores->count() - 2); ?></span>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <span class="text-muted">Sin proveedores</span>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <span class="badge bg-<?php echo e($insumo->estado == 'Disponible' ? 'success' : ($insumo->estado == 'Agotado' ? 'danger' : 'secondary')); ?>">
-                                <?php echo e($insumo->estado); ?>
-
-                            </span>
+                            <?php if($insumo->estado == 'Disponible'): ?>
+                                <span class="badge bg-success">✅ <?php echo e($insumo->estado); ?></span>
+                            <?php elseif($insumo->estado == 'Agotado'): ?>
+                                <span class="badge bg-danger">❌ <?php echo e($insumo->estado); ?></span>
+                            <?php else: ?>
+                                <span class="badge bg-secondary">💀 <?php echo e($insumo->estado); ?></span>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-info btn-sm" title="Ver" onclick="openShowModal(<?php echo e($insumo->insumo_id); ?>)">
+                                <button type="button" class="btn btn-info btn-sm" title="Ver detalles" onclick="openShowModal(<?php echo e($insumo->insumo_id); ?>)">
                                     <i class="fas fa-eye"></i>
                                 </button>
                                 <button type="button" class="btn btn-warning btn-sm" title="Editar" onclick="openEditModal(<?php echo e($insumo->insumo_id); ?>)">
@@ -123,11 +297,20 @@
         </div>
         <?php else: ?>
         <div class="text-center py-5">
-            <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
-            <h4>No hay insumos registrados</h4>
-            <p class="text-muted">Comienza agregando tu primer insumo.</p>
+            <?php if(request()->hasAny(['buscar', 'estado', 'stock', 'vencimiento'])): ?>
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4>😔 No se encontraron insumos</h4>
+                <p class="text-muted">No hay insumos que coincidan con los filtros seleccionados.</p>
+                <button type="button" class="btn btn-outline-secondary me-2" onclick="limpiarFiltros()">
+                    <i class="fas fa-eraser"></i> Quitar Filtros
+                </button>
+            <?php else: ?>
+                <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                <h4>📦 No hay insumos registrados</h4>
+                <p class="text-muted">Comienza agregando tu primer insumo.</p>
+            <?php endif; ?>
             <button type="button" class="btn btn-primary" onclick="openCreateModal()">
-                <i class="fas fa-plus"></i> Crear Primer Insumo
+                <i class="fas fa-plus"></i> Crear Insumo
             </button>
         </div>
         <?php endif; ?>
@@ -155,22 +338,53 @@
             <span class="close" onclick="closeModal('createModal')">&times;</span>
         </div>
         <div class="modal-body">
+            <!-- Mostrar errores de validación -->
+            <div id="createErrors" class="alert alert-danger d-none">
+                <ul class="mb-0" id="createErrorsList"></ul>
+            </div>
+            
             <form id="createForm" action="<?php echo e(route('insumos.store')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="create_nombre" class="form-label">Nombre del Insumo *</label>
-                            <input type="text" class="form-control" id="create_nombre" name="nombre" required placeholder="Ej: Harina de Trigo">
-                            <div class="field-help">
-                                <i class="fas fa-info-circle"></i> Debe ser único en el sistema
-                            </div>
+                            <input type="text" class="form-control" id="create_nombre" name="nombre" required 
+                                   placeholder="Ej: Harina de Trigo" 
+                                   pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s\-\.]+$"
+                                   title="Solo se permiten letras, espacios, guiones y puntos"
+                                   maxlength="255">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Solo letras, espacios, guiones y puntos</small>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="create_unidad_medida" class="form-label">Unidad de Medida *</label>
-                            <input type="text" class="form-control" id="create_unidad_medida" name="unidad_medida" required placeholder="Ej: kg, litro, unidad">
+                            <select class="form-select" id="create_unidad_medida" name="unidad_medida" required>
+                                <option value="">Seleccionar unidad...</option>
+                                <optgroup label="Peso">
+                                    <option value="kg">Kilogramos (kg)</option>
+                                    <option value="gramos">Gramos (g)</option>
+                                </optgroup>
+                                <optgroup label="Volumen">
+                                    <option value="litros">Litros (L)</option>
+                                    <option value="ml">Mililitros (ml)</option>
+                                </optgroup>
+                                <optgroup label="Longitud">
+                                    <option value="metros">Metros (m)</option>
+                                    <option value="cm">Centímetros (cm)</option>
+                                </optgroup>
+                                <optgroup label="Cantidad">
+                                    <option value="unidades">Unidades</option>
+                                    <option value="cajas">Cajas</option>
+                                    <option value="bolsas">Bolsas</option>
+                                    <option value="botellas">Botellas</option>
+                                    <option value="latas">Latas</option>
+                                    <option value="paquetes">Paquetes</option>
+                                </optgroup>
+                            </select>
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                 </div>
@@ -179,22 +393,31 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="create_stock_actual" class="form-label">Stock Actual *</label>
-                            <input type="number" class="form-control" id="create_stock_actual" name="stock_actual" required value="0" min="0">
+                            <input type="number" class="form-control" id="create_stock_actual" name="stock_actual" 
+                                   required value="0" min="0" max="999999" step="1"
+                                   title="Solo números enteros del 0 al 999,999">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Números enteros del 0 al 999,999</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="create_stock_minimo" class="form-label">Stock Mínimo *</label>
-                            <input type="number" class="form-control" id="create_stock_minimo" name="stock_minimo" required value="0" min="0">
-                            <div class="field-help">
-                                <i class="fas fa-info-circle"></i> Límite para alertas de stock bajo
-                            </div>
+                            <input type="number" class="form-control" id="create_stock_minimo" name="stock_minimo" 
+                                   required value="0" min="0" max="999999" step="1"
+                                   title="Solo números enteros del 0 al 999,999">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Números enteros del 0 al 999,999</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="create_cantidad" class="form-label">Cantidad *</label>
-                            <input type="number" class="form-control" id="create_cantidad" name="cantidad" required value="1" min="1">
+                            <input type="number" class="form-control" id="create_cantidad" name="cantidad" 
+                                   required value="1" min="1" max="999999" step="1"
+                                   title="Solo números enteros del 1 al 999,999">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Números enteros del 1 al 999,999</small>
                         </div>
                     </div>
                 </div>
@@ -205,17 +428,22 @@
                             <label for="create_precio" class="form-label">Precio *</label>
                             <div class="input-group">
                                 <span class="input-group-text">₡</span>
-                                <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" required min="0.01" placeholder="0.00">
+                                <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" 
+                                       required min="0.01" max="999999.99" placeholder="0.00"
+                                       title="Precio válido entre ₡0.01 y ₡999,999.99">
                             </div>
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Precio entre ₡0.01 y ₡999,999.99</small>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="create_fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
-                            <input type="date" class="form-control" id="create_fecha_vencimiento" name="fecha_vencimiento">
-                            <div class="field-help">
-                                <i class="fas fa-info-circle"></i> Debe ser posterior a hoy
-                            </div>
+                            <input type="date" class="form-control" id="create_fecha_vencimiento" name="fecha_vencimiento"
+                                   min="<?php echo e(date('Y-m-d', strtotime('+1 day'))); ?>"
+                                   title="La fecha debe ser posterior a hoy">
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">Opcional - debe ser posterior a hoy</small>
                         </div>
                     </div>
                 </div>
@@ -223,21 +451,21 @@
                 <div class="mb-3">
                     <label for="create_estado" class="form-label">Estado *</label>
                     <select class="form-select" id="create_estado" name="estado" required>
-                        <option value="Disponible">Disponible</option>
-                        <option value="Agotado">Agotado</option>
-                        <option value="Vencido">Vencido</option>
+                        <option value="">Seleccionar estado...</option>
+                        <option value="Disponible">✅ Disponible</option>
+                        <option value="Agotado">❌ Agotado</option>
+                        <option value="Vencido">💀 Vencido</option>
                     </select>
-                    <div class="field-help">
-                        <i class="fas fa-info-circle"></i> Debe ser coherente con el stock actual
-                    </div>
+                    <div class="invalid-feedback"></div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Proveedores</label>
-                    <div class="border p-3 rounded" id="createProveedoresList">
+                    <div class="border p-3 rounded">
                         <?php $__currentLoopData = $proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="proveedores[]" value="<?php echo e($proveedor->proveedor_id); ?>" id="create_proveedor<?php echo e($proveedor->proveedor_id); ?>">
+                            <input class="form-check-input" type="checkbox" name="proveedores[]" 
+                                   value="<?php echo e($proveedor->proveedor_id); ?>" id="create_proveedor<?php echo e($proveedor->proveedor_id); ?>">
                             <label class="form-check-label" for="create_proveedor<?php echo e($proveedor->proveedor_id); ?>">
                                 <?php echo e($proveedor->nombre); ?> - <?php echo e($proveedor->telefono); ?>
 
@@ -248,9 +476,7 @@
                         <p class="text-muted">No hay proveedores activos.</p>
                         <?php endif; ?>
                     </div>
-                    <div class="field-help">
-                        <i class="fas fa-info-circle"></i> Recomendado para productos disponibles
-                    </div>
+                    <small class="form-text text-muted">Selecciona uno o más proveedores (opcional)</small>
                 </div>
 
                 <div class="modal-actions">
@@ -284,5 +510,22 @@
 <?php $__env->startPush('scripts'); ?>
 <script src="<?php echo e(asset('js/insumo-modals.js')); ?>"></script>
 <script src="<?php echo e(asset('js/insumo-validations.js')); ?>"></script>
+
+<script>
+// Búsqueda en tiempo real simple
+let timeoutBusqueda;
+
+function buscarEnTiempoReal() {
+    clearTimeout(timeoutBusqueda);
+    timeoutBusqueda = setTimeout(function() {
+        document.getElementById('filtrosForm').submit();
+    }, 500); // Espera 500ms después de que el usuario deje de escribir
+}
+
+function limpiarFiltros() {
+    // Ir a la página sin filtros
+    window.location.href = "<?php echo e(route('insumos.index')); ?>";
+}
+</script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Proyectos 2025 U\La-comarca-ADMIN\resources\views/insumos/index.blade.php ENDPATH**/ ?>

@@ -23,8 +23,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-=======
     <!-- Panel de Filtros -->
     <div class="row mb-4">
         <div class="col-12">
@@ -82,7 +80,6 @@
         </div>
     </div>
 
->>>>>>> main
     <?php if($proveedores->count() > 0): ?>
         <!-- Vista de tabla para pantallas grandes -->
         <div class="d-none d-lg-block">
@@ -101,15 +98,11 @@
                     </thead>
                     <tbody>
                         <?php $__currentLoopData = $proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<<<<<<< HEAD
-                        <tr>
-=======
                         <tr class="proveedor-row" 
                             data-nombre="<?php echo e(strtolower($proveedor->nombre)); ?>" 
                             data-estado="<?php echo e($proveedor->estado); ?>" 
                             data-contacto="<?php echo e(strtolower($proveedor->telefono . ' ' . $proveedor->correo)); ?>" 
                             data-insumos="<?php echo e($proveedor->insumos->count()); ?>">
->>>>>>> main
                             <td><?php echo e($proveedor->proveedor_id); ?></td>
                             <td>
                                 <strong><?php echo e($proveedor->nombre); ?></strong>
@@ -165,15 +158,11 @@
         <div class="d-lg-none">
             <div class="row g-3">
                 <?php $__currentLoopData = $proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<<<<<<< HEAD
-                <div class="col-12 col-md-6">
-=======
                 <div class="col-12 col-md-6 proveedor-card-item" 
                      data-nombre="<?php echo e(strtolower($proveedor->nombre)); ?>" 
                      data-estado="<?php echo e($proveedor->estado); ?>" 
                      data-contacto="<?php echo e(strtolower($proveedor->telefono . ' ' . $proveedor->correo)); ?>" 
                      data-insumos="<?php echo e($proveedor->insumos->count()); ?>">
->>>>>>> main
                     <div class="card proveedor-card-responsive">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
@@ -352,12 +341,6 @@
                 <div class="mb-3">
                     <label class="form-label">Insumos que Provee <span class="info-tooltip" data-tooltip="Seleccione los insumos que este proveedor puede suministrar">ℹ️</span></label>
                     
-<<<<<<< HEAD
-                    <!-- Debug temporal para verificar -->
-                    <small class="text-success d-block mb-2">✓ Insumos cargados: <?php echo e($insumos->count()); ?></small>
-                    
-=======
->>>>>>> main
                     <div class="border p-3 rounded" id="createProveedorInsumosList" style="background-color: white; border-radius: 10px; max-height: 200px; overflow-y: auto;">
                         <?php $__currentLoopData = $insumos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $insumo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="form-check">
@@ -414,9 +397,6 @@
 <?php $__env->startPush('scripts'); ?>
 <script src="<?php echo e(asset('js/proveedor-modals.js')); ?>"></script>
 <script src="<?php echo e(asset('js/proveedor-validations.js')); ?>"></script>
-<<<<<<< HEAD
-=======
 <script src="<?php echo e(asset('js/proveedor-filters.js')); ?>"></script>
->>>>>>> main
 <?php $__env->stopPush(); ?>
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\La-comarca-ADMIN\resources\views/proveedor/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Proyectos 2025 U\La-comarca-ADMIN\resources\views/proveedor/index.blade.php ENDPATH**/ ?>
