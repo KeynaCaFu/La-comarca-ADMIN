@@ -12,13 +12,14 @@ class ProveedorController extends Controller
     public function index()
     {
         $proveedores = Proveedor::with('insumos')->get();
-        $insumos = Insumo::where('estado', 'Disponible')->get();
+        $insumos = Insumo::all(); // Obtener TODOS los insumos
+        
         return view('proveedor.index', compact('proveedores', 'insumos'));
     }
 
     public function create()
     {
-        $insumos = Insumo::where('estado', 'Disponible')->get();
+        $insumos = Insumo::all(); // Obtener TODOS los insumos
         return view('proveedor.create', compact('insumos'));
     }
 
@@ -119,7 +120,8 @@ class ProveedorController extends Controller
     public function editModal($id)
     {
         $proveedor = Proveedor::with('insumos')->findOrFail($id);
-        $insumos = Insumo::where('estado', 'Disponible')->get();
+        $insumos = Insumo::all(); // Obtener TODOS los insumos
+        
         return view('proveedor.partials.edit-modal', compact('proveedor', 'insumos'));
     }
 }

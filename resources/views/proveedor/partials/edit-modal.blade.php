@@ -1,4 +1,4 @@
-<form id="editProveedorForm" action="{{ route('proveedores.update', $proveedor->proveedor_id) }}" method="POST">
+<form id="editProveedorForm" action="{{ route('proveedor.update', $proveedor->proveedor_id) }}" method="POST">
     @csrf
     @method('PUT')
     
@@ -34,7 +34,7 @@
             <div class="mb-3">
                 <label for="edit_proveedor_total_compras" class="form-label">Total de Compras *</label>
                 <div class="input-group">
-                    <span class="input-group-text">$</span>
+                    <span class="input-group-text">₡</span>
                     <input type="number" step="0.01" class="form-control" id="edit_proveedor_total_compras" name="total_compras" required value="{{ $proveedor->total_compras }}" min="0">
                 </div>
             </div>
@@ -54,13 +54,14 @@
     
     <div class="mb-3">
         <label class="form-label">Insumos que Provee <span class="info-tooltip" data-tooltip="Seleccione los insumos que este proveedor puede suministrar">ℹ️</span></label>
+        
         <div class="border p-3 rounded" style="background-color: white; border-radius: 10px; max-height: 200px; overflow-y: auto;">
             @foreach($insumos as $insumo)
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="insumos[]" value="{{ $insumo->insumo_id }}" id="edit_proveedor_insumo{{ $insumo->insumo_id }}"
                        {{ in_array($insumo->insumo_id, $proveedor->insumos->pluck('insumo_id')->toArray()) ? 'checked' : '' }}>
                 <label class="form-check-label" for="edit_proveedor_insumo{{ $insumo->insumo_id }}">
-                    <strong>{{ $insumo->nombre }}</strong> - ${{ number_format($insumo->precio, 2) }}
+                    <strong>{{ $insumo->nombre }}</strong> - ₡{{ number_format($insumo->precio, 2) }}
                     <br><small class="text-muted">{{ $insumo->unidad_medida }} | Stock: {{ $insumo->stock_actual }}</small>
                 </label>
             </div>

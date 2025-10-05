@@ -323,7 +323,7 @@ tr:hover {
 }
 
 .btn-add:hover{
-    background-color: #bac7bf;
+    background-color: #0a612c;
 }
 
 .btn-asignar{
@@ -357,7 +357,7 @@ tr:hover {
 }
 
 .btn-primary:hover {
-    background: #6c806c;
+    background: #0f750f;
     color: #fff;
 }
 
@@ -374,7 +374,7 @@ tr:hover {
 }
 
 .btn-addNew:hover {
-    background: #6c806c;
+    background: #116411;
 }
 
 .btn-save {
@@ -394,12 +394,12 @@ tr:hover {
 }
 
 .btn-danger {
-    background: #d87307;
+    background: #9f0505;
     color: #fff;
 }
 
 .btn-danger:hover {
-    background: #ac5c1b;
+    background: #d81b1b;
 }
 
 .btn-success {
@@ -422,23 +422,23 @@ tr:hover {
 }
 
 .btn-warning {
-    background-color: #ffc107;
-    color: #212529;
+    background-color: #d23313;
+    color: #ffffff;
     border-color: #ffc107;
 }
 
 .btn-warning:hover {
     background-color: #e0a800;
-    color: #212529;
+    color: #ffffff;
 }
 
 .btn-info {
-    background-color: #17a2b8;
+    background-color: #485a1a;
     color: white;
 }
 
 .btn-info:hover {
-    background-color: #138496;
+    background-color: #6b8a1b;
     color: white;
 }
 
@@ -761,4 +761,112 @@ tr:hover {
 ::-webkit-scrollbar-thumb {
     background: var(--secondary);
     border-radius: 4px;
+}
+
+/* ========================================
+   RESPONSIVE IMPROVEMENTS
+   ======================================== */
+
+/* Botones responsive mejorados */
+@media (max-width: 768px) {
+    .btn-add {
+        width: auto;
+        min-width: 140px;
+        padding: 8px 16px;
+        font-size: 0.875rem;
+    }
+    
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+    
+    .btn-group .btn {
+        flex: 1;
+        min-width: 35px;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-add {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .btn-group .btn {
+        padding: 6px 10px;
+    }
+}
+
+/* Mejoras generales responsive */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .table-responsive {
+        border: none;
+        box-shadow: none;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    
+    .row.g-3 {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+    }
+    
+    .row.g-3 > * {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+/* Texto responsive */
+@media (max-width: 768px) {
+    h1, .h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2, .h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3, .h3 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    h1, .h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2, .h2 {
+        font-size: 1.25rem;
+    }
+    
+    h3, .h3 {
+        font-size: 1.1rem;
+    }
+    
+    .small, small {
+        font-size: 0.75rem;
+    }
 }

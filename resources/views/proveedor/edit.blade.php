@@ -51,7 +51,7 @@
                         <div class="mb-3">
                             <label for="total_compras" class="form-label">Total de Compras *</label>
                             <div class="input-group price-input-group">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">₡</span>
                                 <input type="number" step="0.01" class="form-control" id="total_compras" name="total_compras" required 
                                        value="{{ old('total_compras', $proveedor->total_compras) }}" min="0">
                             </div>
@@ -77,7 +77,7 @@
                                    value="{{ $insumo->insumo_id }}" id="insumo{{ $insumo->insumo_id }}"
                                    {{ in_array($insumo->insumo_id, old('insumos', $proveedor->insumos->pluck('insumo_id')->toArray())) ? 'checked' : '' }}>
                             <label class="form-check-label" for="insumo{{ $insumo->insumo_id }}">
-                                {{ $insumo->nombre }} - ${{ number_format($insumo->precio, 2) }}
+                                {{ $insumo->nombre }} - ₡{{ number_format($insumo->precio, 2) }}
                             </label>
                         </div>
                         @endforeach

@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <th>Precio:</th>
-                    <td>${{ number_format($insumo->precio, 2) }}</td>
+                    <td>₡{{ number_format($insumo->precio, 2) }}</td>
                 </tr>
                 <tr>
                     <th>Fecha Vencimiento:</th>
