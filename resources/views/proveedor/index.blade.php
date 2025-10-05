@@ -51,10 +51,6 @@
                                 </select>
                             </div>
                             <div class="col-12 col-md-6 col-lg-3">
-                                <label for="filtroContacto" class="form-label">Contacto</label>
-                                <input type="text" class="form-control" id="filtroContacto" placeholder="Email o teléfono...">
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3">
                                 <label for="filtroInsumos" class="form-label">Insumos</label>
                                 <select class="form-select" id="filtroInsumos">
                                     <option value="">Todos</option>

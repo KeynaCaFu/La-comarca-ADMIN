@@ -1,4 +1,4 @@
-// Sistema de Filtrado para Proveedores
+// Sistema de Filtrado para Proveedores (sin filtro de contacto)
 class ProveedorFilters {
     constructor() {
         this.initializeFilters();
@@ -16,12 +16,8 @@ class ProveedorFilters {
     }
 
     setupEventListeners() {
-        // Filtrado en tiempo real para nombre y contacto
+        // Filtrado en tiempo real para nombre
         document.getElementById('filtroNombre')?.addEventListener('input', () => {
-            this.aplicarFiltros();
-        });
-
-        document.getElementById('filtroContacto')?.addEventListener('input', () => {
             this.aplicarFiltros();
         });
 
@@ -115,7 +111,6 @@ class ProveedorFilters {
         return {
             nombre: document.getElementById('filtroNombre')?.value.toLowerCase().trim() || '',
             estado: document.getElementById('filtroEstado')?.value || '',
-            contacto: document.getElementById('filtroContacto')?.value.toLowerCase().trim() || '',
             insumos: document.getElementById('filtroInsumos')?.value || ''
         };
     }
@@ -123,7 +118,6 @@ class ProveedorFilters {
     cumpleFiltros(elemento, filtros) {
         const nombre = elemento.dataset.nombre || '';
         const estado = elemento.dataset.estado || '';
-        const contacto = elemento.dataset.contacto || '';
         const insumos = parseInt(elemento.dataset.insumos) || 0;
 
         // Filtro por nombre
@@ -133,11 +127,6 @@ class ProveedorFilters {
 
         // Filtro por estado
         if (filtros.estado && estado !== filtros.estado) {
-            return false;
-        }
-
-        // Filtro por contacto (teléfono o email)
-        if (filtros.contacto && !contacto.includes(filtros.contacto)) {
             return false;
         }
 
@@ -205,7 +194,6 @@ class ProveedorFilters {
         // Limpiar todos los inputs
         document.getElementById('filtroNombre').value = '';
         document.getElementById('filtroEstado').value = '';
-        document.getElementById('filtroContacto').value = '';
         document.getElementById('filtroInsumos').value = '';
 
         // Mostrar todos los elementos
@@ -256,7 +244,6 @@ class ProveedorFilters {
             const filtros = JSON.parse(filtrosGuardados);
             document.getElementById('filtroNombre').value = filtros.nombre || '';
             document.getElementById('filtroEstado').value = filtros.estado || '';
-            document.getElementById('filtroContacto').value = filtros.contacto || '';
             document.getElementById('filtroInsumos').value = filtros.insumos || '';
             
             this.aplicarFiltros();
