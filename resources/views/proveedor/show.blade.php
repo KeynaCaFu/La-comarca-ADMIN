@@ -45,7 +45,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>Total Compras:</th>
-                                <td>${{ number_format($proveedor->total_compras, 2) }}</td>
+                                <td>₡{{ number_format($proveedor->total_compras, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Insumos Proveídos:</th>
@@ -87,7 +87,7 @@
                                             {{ $insumo->stock_actual }}
                                         </span>
                                     </td>
-                                    <td>${{ number_format($insumo->precio, 2) }}</td>
+                                    <td>₡{{ number_format($insumo->precio, 2) }}</td>
                                     <td>
                                         <span class="badge bg-{{ $insumo->estado == 'Disponible' ? 'success' : ($insumo->estado == 'Agotado' ? 'danger' : 'secondary') }}">
                                             {{ $insumo->estado }}

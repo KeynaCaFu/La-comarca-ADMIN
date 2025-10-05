@@ -60,7 +60,7 @@
                             <div class="mb-3">
                                 <label for="precio" class="form-label">Precio *</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">₡</span>
                                     <input type="number" step="0.01" class="form-control" id="precio" name="precio" required 
                                            value="{{ old('precio', $insumo->precio) }}" min="0">
                                 </div>

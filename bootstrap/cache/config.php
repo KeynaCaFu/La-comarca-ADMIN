@@ -166,7 +166,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\xampp\\htdocs\\Proyectos 2025 U\\La-comarca-ADMIN\\storage\\framework/sessions',
+    'files' => 'C:\\xampp\\htdocs\\La-comarca-ADMIN\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -186,9 +186,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Proyectos 2025 U\\La-comarca-ADMIN\\resources\\views',
+      0 => 'C:\\xampp\\htdocs\\La-comarca-ADMIN\\resources\\views',
     ),
-    'compiled' => 'C:\\xampp\\htdocs\\Proyectos 2025 U\\La-comarca-ADMIN\\storage\\framework\\views',
+    'compiled' => 'C:\\xampp\\htdocs\\La-comarca-ADMIN\\storage\\framework\\views',
   ),
   'auth' => 
   array (
@@ -296,7 +296,7 @@
     array (
     ),
     'enable_runnable_solutions' => NULL,
-    'remote_sites_path' => 'C:\\xampp\\htdocs\\Proyectos 2025 U\\La-comarca-ADMIN',
+    'remote_sites_path' => 'C:\\xampp\\htdocs\\La-comarca-ADMIN',
     'local_sites_path' => '',
     'housekeeping_endpoint_prefix' => '_ignition',
     'settings_file_path' => '',

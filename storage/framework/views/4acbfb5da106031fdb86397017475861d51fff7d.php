@@ -1,13 +1,13 @@
-@extends('layouts.app')
 
-@section('title', 'Gestión de Proveedores')
 
-@push('styles')
-    <link href="{{ asset('css/pages/proveedores.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/proveedor-modals.css') }}" rel="stylesheet">
-@endpush
+<?php $__env->startSection('title', 'Gestión de Proveedores'); ?>
 
-@section('content')
+<?php $__env->startPush('styles'); ?>
+    <link href="<?php echo e(asset('css/pages/proveedores.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/proveedor-modals.css')); ?>" rel="stylesheet">
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <!-- Header responsive -->
     <div class="row mb-4">
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    @if($proveedores->count() > 0)
+    <?php if($proveedores->count() > 0): ?>
         <!-- Vista de tabla para pantallas grandes -->
         <div class="d-none d-lg-block">
             <div class="table-responsive">
@@ -40,44 +40,45 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($proveedores as $proveedor)
+                        <?php $__currentLoopData = $proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td>{{ $proveedor->proveedor_id }}</td>
+                            <td><?php echo e($proveedor->proveedor_id); ?></td>
                             <td>
-                                <strong>{{ $proveedor->nombre }}</strong>
+                                <strong><?php echo e($proveedor->nombre); ?></strong>
                                 <br>
-                                <small class="text-muted">{{ Str::limit($proveedor->direccion, 50) }}</small>
+                                <small class="text-muted"><?php echo e(Str::limit($proveedor->direccion, 50)); ?></small>
                             </td>
                             <td class="contacto-info">
-                                <i class="fas fa-phone"></i> {{ $proveedor->telefono }}<br>
-                                <i class="fas fa-envelope"></i> {{ Str::limit($proveedor->correo, 25) }}
+                                <i class="fas fa-phone"></i> <?php echo e($proveedor->telefono); ?><br>
+                                <i class="fas fa-envelope"></i> <?php echo e(Str::limit($proveedor->correo, 25)); ?>
+
                             </td>
-                            <td>₡{{ number_format($proveedor->total_compras, 2) }}</td>
+                            <td>₡<?php echo e(number_format($proveedor->total_compras, 2)); ?></td>
                             <td>
-                                @if($proveedor->insumos->count() > 0)
-                                    <span class="badge bg-success">{{ $proveedor->insumos->count() }} insumos</span>
-                                @else
+                                <?php if($proveedor->insumos->count() > 0): ?>
+                                    <span class="badge bg-success"><?php echo e($proveedor->insumos->count()); ?> insumos</span>
+                                <?php else: ?>
                                     <span class="text-muted">Sin insumos</span>
-                                @endif
+                                <?php endif; ?>
                             </td>
                             <td>
-                                @if($proveedor->estado == 'Activo')
-                                    <span class="estado-activo-badge">{{ $proveedor->estado }}</span>
-                                @else
-                                    <span class="estado-inactivo-badge">{{ $proveedor->estado }}</span>
-                                @endif
+                                <?php if($proveedor->estado == 'Activo'): ?>
+                                    <span class="estado-activo-badge"><?php echo e($proveedor->estado); ?></span>
+                                <?php else: ?>
+                                    <span class="estado-inactivo-badge"><?php echo e($proveedor->estado); ?></span>
+                                <?php endif; ?>
                             </td>
                             <td class="baction">
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-info btn-sm" title="Ver" onclick="openShowProveedorModal({{ $proveedor->proveedor_id }})">
+                                    <button type="button" class="btn btn-info btn-sm" title="Ver" onclick="openShowProveedorModal(<?php echo e($proveedor->proveedor_id); ?>)">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-sm" title="Editar" onclick="openEditProveedorModal({{ $proveedor->proveedor_id }})">
+                                    <button type="button" class="btn btn-warning btn-sm" title="Editar" onclick="openEditProveedorModal(<?php echo e($proveedor->proveedor_id); ?>)">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <form action="{{ route('proveedor.destroy', $proveedor->proveedor_id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
+                                    <form action="<?php echo e(route('proveedor.destroy', $proveedor->proveedor_id)); ?>" method="POST" class="d-inline">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
                                         <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" 
                                             onclick="return confirm('¿Estás seguro de eliminar este proveedor?')">
                                             <i class="fas fa-trash"></i>
@@ -86,7 +87,7 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
@@ -95,26 +96,27 @@
         <!-- Vista de cards para pantallas medianas y pequeñas -->
         <div class="d-lg-none">
             <div class="row g-3">
-                @foreach($proveedores as $proveedor)
+                <?php $__currentLoopData = $proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-12 col-md-6">
                     <div class="card proveedor-card-responsive">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <span class="badge bg-secondary me-2">#{{ $proveedor->proveedor_id }}</span>
-                                <h6 class="mb-0 fw-bold">{{ $proveedor->nombre }}</h6>
+                                <span class="badge bg-secondary me-2">#<?php echo e($proveedor->proveedor_id); ?></span>
+                                <h6 class="mb-0 fw-bold"><?php echo e($proveedor->nombre); ?></h6>
                             </div>
-                            @if($proveedor->estado == 'Activo')
-                                <span class="estado-activo-badge">{{ $proveedor->estado }}</span>
-                            @else
-                                <span class="estado-inactivo-badge">{{ $proveedor->estado }}</span>
-                            @endif
+                            <?php if($proveedor->estado == 'Activo'): ?>
+                                <span class="estado-activo-badge"><?php echo e($proveedor->estado); ?></span>
+                            <?php else: ?>
+                                <span class="estado-inactivo-badge"><?php echo e($proveedor->estado); ?></span>
+                            <?php endif; ?>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 mb-2">
                                     <small class="text-muted d-block">
                                         <i class="fas fa-map-marker-alt me-1"></i>
-                                        {{ Str::limit($proveedor->direccion, 60) }}
+                                        <?php echo e(Str::limit($proveedor->direccion, 60)); ?>
+
                                     </small>
                                 </div>
                             </div>
@@ -122,12 +124,14 @@
                             <div class="row mb-2">
                                 <div class="col-12 col-sm-6 mb-1">
                                     <small class="contacto-info">
-                                        <i class="fas fa-phone me-1"></i> {{ $proveedor->telefono }}
+                                        <i class="fas fa-phone me-1"></i> <?php echo e($proveedor->telefono); ?>
+
                                     </small>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <small class="contacto-info">
-                                        <i class="fas fa-envelope me-1"></i> {{ Str::limit($proveedor->correo, 20) }}
+                                        <i class="fas fa-envelope me-1"></i> <?php echo e(Str::limit($proveedor->correo, 20)); ?>
+
                                     </small>
                                 </div>
                             </div>
@@ -136,18 +140,18 @@
                                 <div class="col-6">
                                     <div class="stat-mini">
                                         <span class="text-muted small">Total Compras</span>
-                                        <div class="fw-bold text-success">₡{{ number_format($proveedor->total_compras, 2) }}</div>
+                                        <div class="fw-bold text-success">₡<?php echo e(number_format($proveedor->total_compras, 2)); ?></div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="stat-mini">
                                         <span class="text-muted small">Insumos</span>
                                         <div class="fw-bold">
-                                            @if($proveedor->insumos->count() > 0)
-                                                <span class="badge bg-success">{{ $proveedor->insumos->count() }}</span>
-                                            @else
+                                            <?php if($proveedor->insumos->count() > 0): ?>
+                                                <span class="badge bg-success"><?php echo e($proveedor->insumos->count()); ?></span>
+                                            <?php else: ?>
                                                 <span class="text-muted">0</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -155,17 +159,17 @@
                         </div>
                         <div class="card-footer">
                             <div class="d-flex gap-2 justify-content-center">
-                                <button type="button" class="btn btn-info btn-sm flex-fill" onclick="openShowProveedorModal({{ $proveedor->proveedor_id }})">
+                                <button type="button" class="btn btn-info btn-sm flex-fill" onclick="openShowProveedorModal(<?php echo e($proveedor->proveedor_id); ?>)">
                                     <i class="fas fa-eye me-1"></i>
                                     <span class="d-none d-sm-inline">Ver</span>
                                 </button>
-                                <button type="button" class="btn btn-warning btn-sm flex-fill" onclick="openEditProveedorModal({{ $proveedor->proveedor_id }})">
+                                <button type="button" class="btn btn-warning btn-sm flex-fill" onclick="openEditProveedorModal(<?php echo e($proveedor->proveedor_id); ?>)">
                                     <i class="fas fa-edit me-1"></i>
                                     <span class="d-none d-sm-inline">Editar</span>
                                 </button>
-                                <form action="{{ route('proveedor.destroy', $proveedor->proveedor_id) }}" method="POST" class="flex-fill">
-                                    @csrf
-                                    @method('DELETE')
+                                <form action="<?php echo e(route('proveedor.destroy', $proveedor->proveedor_id)); ?>" method="POST" class="flex-fill">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
                                     <button type="submit" class="btn btn-danger btn-sm w-100" 
                                         onclick="return confirm('¿Estás seguro de eliminar este proveedor?')">
                                         <i class="fas fa-trash me-1"></i>
@@ -176,10 +180,10 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
-    @else
+    <?php else: ?>
         <div class="row">
             <div class="col-12">
                 <div class="text-center py-5">
@@ -192,7 +196,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <!-- Modal para Ver Detalles de Proveedor -->
@@ -216,8 +220,8 @@
             <span class="close" onclick="closeProveedorModal('createProveedorModal')">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="createProveedorForm" action="{{ route('proveedor.store') }}" method="POST">
-                @csrf
+            <form id="createProveedorForm" action="<?php echo e(route('proveedor.store')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 
                 <div class="mb-3">
                     <label for="create_proveedor_nombre" class="form-label">Nombre del Proveedor *</label>
@@ -273,25 +277,26 @@
                     <label class="form-label">Insumos que Provee <span class="info-tooltip" data-tooltip="Seleccione los insumos que este proveedor puede suministrar">ℹ️</span></label>
                     
                     <!-- Debug temporal para verificar -->
-                    <small class="text-success d-block mb-2">✓ Insumos cargados: {{ $insumos->count() }}</small>
+                    <small class="text-success d-block mb-2">✓ Insumos cargados: <?php echo e($insumos->count()); ?></small>
                     
                     <div class="border p-3 rounded" id="createProveedorInsumosList" style="background-color: white; border-radius: 10px; max-height: 200px; overflow-y: auto;">
-                        @foreach($insumos as $insumo)
+                        <?php $__currentLoopData = $insumos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $insumo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="insumos[]" value="{{ $insumo->insumo_id }}" id="create_proveedor_insumo{{ $insumo->insumo_id }}">
-                            <label class="form-check-label" for="create_proveedor_insumo{{ $insumo->insumo_id }}">
-                                <strong>{{ $insumo->nombre }}</strong> - ₡{{ number_format($insumo->precio, 2) }}
-                                <br><small class="text-muted">{{ $insumo->unidad_medida }} | Stock: {{ $insumo->stock_actual }}</small>
+                            <input class="form-check-input" type="checkbox" name="insumos[]" value="<?php echo e($insumo->insumo_id); ?>" id="create_proveedor_insumo<?php echo e($insumo->insumo_id); ?>">
+                            <label class="form-check-label" for="create_proveedor_insumo<?php echo e($insumo->insumo_id); ?>">
+                                <strong><?php echo e($insumo->nombre); ?></strong> - ₡<?php echo e(number_format($insumo->precio, 2)); ?>
+
+                                <br><small class="text-muted"><?php echo e($insumo->unidad_medida); ?> | Stock: <?php echo e($insumo->stock_actual); ?></small>
                             </label>
                         </div>
-                        @endforeach
-                        @if($insumos->count() == 0)
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($insumos->count() == 0): ?>
                         <div class="text-center p-3">
                             <i class="fas fa-box-open fa-2x text-muted mb-2"></i>
                             <p class="text-muted">No hay insumos disponibles.</p>
                             <small>Puede crear insumos primero y luego asignarlos a este proveedor.</small>
                         </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                     <small class="text-muted mt-2 d-block">
                         <i class="fas fa-info-circle"></i> 
@@ -325,9 +330,10 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
-<script src="{{ asset('js/proveedor-modals.js') }}"></script>
-<script src="{{ asset('js/proveedor-validations.js') }}"></script>
-@endpush
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('js/proveedor-modals.js')); ?>"></script>
+<script src="<?php echo e(asset('js/proveedor-validations.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\La-comarca-ADMIN\resources\views/proveedor/index.blade.php ENDPATH**/ ?>

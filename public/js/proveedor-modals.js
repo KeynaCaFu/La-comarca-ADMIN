@@ -94,31 +94,43 @@ class ProveedorModals {
 
     // Abrir modal de editar
     async openEditModal(proveedorId) {
+        console.log('Loading edit modal for proveedor:', proveedorId);
+        
         const modal = document.getElementById('editProveedorModal');
         const content = document.getElementById('editProveedorModalContent');
         
-        if (!modal || !content) return;
+        if (!modal || !content) {
+            console.error('Modal elements not found');
+            alert('Error: No se pudieron encontrar los elementos del modal.');
+            return;
+        }
 
         // Mostrar loading
-        content.innerHTML = '<div class="loading">Cargando formulario de edición...</div>';
+        content.innerHTML = '<div class="loading text-center p-4"><i class="fas fa-spinner fa-spin"></i> Cargando formulario de edición...</div>';
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
         
         try {
-            const response = await fetch(`/proveedor/${proveedorId}/edit-modal`);
+            const url = `/proveedor/${proveedorId}/edit-modal`;
+            console.log('Fetching:', url);
+            
+            const response = await fetch(url);
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
             }
             
             const html = await response.text();
             content.innerHTML = html;
+            console.log('Modal content loaded successfully');
         } catch (error) {
-            console.error('Error loading modal content:', error);
+            console.error('Error loading modal:', error);
             content.innerHTML = `
-                <div class="error">
+                <div class="alert alert-danger text-center">
                     <i class="fas fa-exclamation-triangle"></i>
-                    Error al cargar el formulario de edición
-                    <br><small>Por favor, inténtalo de nuevo</small>
+                    <h5>Error al cargar el formulario</h5>
+                    <p>${error.message}</p>
+                    <button class="btn btn-secondary" onclick="closeProveedorModal('editProveedorModal')">Cerrar</button>
                 </div>
             `;
         }
@@ -330,8 +342,13 @@ function openShowProveedorModal(proveedorId) {
 }
 
 function openEditProveedorModal(proveedorId) {
+    console.log('Attempting to open edit modal for proveedor ID:', proveedorId);
+    
     if (window.proveedorModals) {
         window.proveedorModals.openEditModal(proveedorId);
+    } else {
+        console.error('proveedorModals not initialized');
+        alert('Error: Sistema de modales no inicializado. Por favor, recargue la página.');
     }
 }
 
