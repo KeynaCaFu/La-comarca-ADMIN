@@ -2,6 +2,10 @@
 
 @section('title', 'Gestión de Insumos')
 
+@push('styles')
+<link href="{{ asset('css/validations.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1><i class="fas fa-boxes"></i> Gestión de Insumos</h1>
@@ -9,6 +13,14 @@
         <i class="fas fa-plus"></i> Nuevo Insumo
     </button>
 </div>
+
+<!-- Alertas de validación automática -->
+@if(session('warning'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> {{ session('warning') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
 
 <div class="card">
     <div class="card-body">
@@ -22,6 +34,7 @@
                         <th>Stock Actual</th>
                         <th>Stock Mínimo</th>
                         <th>Precio</th>
+                        <th>Vencimiento</th>
                         <th>Proveedores</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -29,7 +42,7 @@
                 </thead>
                 <tbody>
                     @foreach($insumos as $insumo)
-                    <tr>
+                    <tr class="{{ $insumo->estado == 'Vencido' ? 'table-danger' : ($insumo->stock_actual <= $insumo->stock_minimo ? 'table-warning' : '') }}">
                         <td>{{ $insumo->insumo_id }}</td>
                         <td>
                             <strong>{{ $insumo->nombre }}</strong>
@@ -40,9 +53,32 @@
                             <span class="badge bg-{{ $insumo->stock_actual > $insumo->stock_minimo ? 'success' : 'warning' }}">
                                 {{ $insumo->stock_actual }}
                             </span>
+                            @if($insumo->stock_actual <= $insumo->stock_minimo)
+                                <br><small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Stock bajo</small>
+                            @endif
                         </td>
                         <td>{{ $insumo->stock_minimo }}</td>
                         <td>${{ number_format($insumo->precio, 2) }}</td>
+                        <td>
+                            @if($insumo->fecha_vencimiento)
+                                @php
+                                    $fechaVencimiento = \Carbon\Carbon::parse($insumo->fecha_vencimiento);
+                                    $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaVencimiento, false);
+                                @endphp
+                                
+                                <span class="badge bg-{{ $diasRestantes < 0 ? 'danger' : ($diasRestantes <= 7 ? 'warning' : 'success') }}">
+                                    {{ $fechaVencimiento->format('d/m/Y') }}
+                                </span>
+                                
+                                @if($diasRestantes < 0)
+                                    <br><small class="text-danger"><i class="fas fa-skull-crossbones"></i> Vencido</small>
+                                @elseif($diasRestantes <= 7)
+                                    <br><small class="text-warning"><i class="fas fa-clock"></i> Vence en {{ $diasRestantes }} días</small>
+                                @endif
+                            @else
+                                <span class="text-muted">Sin fecha</span>
+                            @endif
+                        </td>
                         <td>
                             @if($insumo->proveedores->count() > 0)
                                 @foreach($insumo->proveedores as $proveedor)
@@ -121,6 +157,9 @@
                         <div class="mb-3">
                             <label for="create_nombre" class="form-label">Nombre del Insumo *</label>
                             <input type="text" class="form-control" id="create_nombre" name="nombre" required placeholder="Ej: Harina de Trigo">
+                            <div class="field-help">
+                                <i class="fas fa-info-circle"></i> Debe ser único en el sistema
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -142,6 +181,9 @@
                         <div class="mb-3">
                             <label for="create_stock_minimo" class="form-label">Stock Mínimo *</label>
                             <input type="number" class="form-control" id="create_stock_minimo" name="stock_minimo" required value="0" min="0">
+                            <div class="field-help">
+                                <i class="fas fa-info-circle"></i> Límite para alertas de stock bajo
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -158,7 +200,7 @@
                             <label for="create_precio" class="form-label">Precio *</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" required min="0" placeholder="0.00">
+                                <input type="number" step="0.01" class="form-control" id="create_precio" name="precio" required min="0.01" placeholder="0.00">
                             </div>
                         </div>
                     </div>
@@ -166,6 +208,9 @@
                         <div class="mb-3">
                             <label for="create_fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
                             <input type="date" class="form-control" id="create_fecha_vencimiento" name="fecha_vencimiento">
+                            <div class="field-help">
+                                <i class="fas fa-info-circle"></i> Debe ser posterior a hoy
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -177,6 +222,9 @@
                         <option value="Agotado">Agotado</option>
                         <option value="Vencido">Vencido</option>
                     </select>
+                    <div class="field-help">
+                        <i class="fas fa-info-circle"></i> Debe ser coherente con el stock actual
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -193,6 +241,9 @@
                         @if($proveedores->count() == 0)
                         <p class="text-muted">No hay proveedores activos.</p>
                         @endif
+                    </div>
+                    <div class="field-help">
+                        <i class="fas fa-info-circle"></i> Recomendado para productos disponibles
                     </div>
                 </div>
 
@@ -226,4 +277,5 @@
 
 @push('scripts')
 <script src="{{ asset('js/insumo-modals.js') }}"></script>
+<script src="{{ asset('js/insumo-validations.js') }}"></script>
 @endpush
