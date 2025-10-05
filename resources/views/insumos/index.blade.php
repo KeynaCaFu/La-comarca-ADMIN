@@ -4,6 +4,7 @@
 
 @push('styles')
 <link href="{{ asset('css/validations.css') }}" rel="stylesheet">
+<link href="{{ asset('css/pages/insumos.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -82,7 +83,7 @@
                         <td>
                             @if($insumo->proveedores->count() > 0)
                                 @foreach($insumo->proveedores as $proveedor)
-                                    <span class="badge bg-info">{{ $proveedor->nombre }}</span>
+                                    <span class="badge-insumo">{{ $proveedor->nombre }}</span>
                                 @endforeach
                             @else
                                 <span class="text-muted">Sin proveedores</span>

@@ -4,6 +4,7 @@
 
 <?php $__env->startPush('styles'); ?>
 <link href="<?php echo e(asset('css/validations.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/pages/insumos.css')); ?>" rel="stylesheet">
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -85,7 +86,7 @@
                         <td>
                             <?php if($insumo->proveedores->count() > 0): ?>
                                 <?php $__currentLoopData = $insumo->proveedores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proveedor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <span class="badge bg-info"><?php echo e($proveedor->nombre); ?></span>
+                                    <span class="badge "><?php echo e($proveedor->nombre); ?></span>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php else: ?>
                                 <span class="text-muted">Sin proveedores</span>

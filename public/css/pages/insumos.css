@@ -12,6 +12,10 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
 }
 
+.badge-insumo {
+    background-color: #485a1a;
+}
+
 .insumo-card:hover {
     transform: translateY(-2px);
 }
