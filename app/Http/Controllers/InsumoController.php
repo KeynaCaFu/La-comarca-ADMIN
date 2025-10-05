@@ -10,15 +10,77 @@ use Illuminate\Routing\Controller;
 
 class InsumoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $insumos = Insumo::with('proveedores')->get();
-        $proveedores = Proveedor::where('estado', 'Activo')->get(); // Agregar esta línea
+        $query = Insumo::with('proveedores');
+        
+        // Filtro simple por nombre
+        if ($request->filled('buscar')) {
+            $query->where('nombre', 'like', '%' . $request->buscar . '%');
+        }
+        
+        // Filtro por estado
+        if ($request->filled('estado') && $request->estado !== 'todos') {
+            $query->where('estado', $request->estado);
+        }
+        
+        // Filtro por vencimiento (opciones simples)
+        if ($request->filled('vencimiento') && $request->vencimiento !== 'todos') {
+            $hoy = Carbon::now();
+            
+            switch ($request->vencimiento) {
+                case 'vencidos':
+                    $query->where('fecha_vencimiento', '<', $hoy);
+                    break;
+                case 'por_vencer':
+                    $query->whereBetween('fecha_vencimiento', [$hoy, $hoy->copy()->addDays(30)]);
+                    break;
+                case 'buenos':
+                    $query->where('fecha_vencimiento', '>', $hoy->copy()->addDays(30))
+                          ->orWhereNull('fecha_vencimiento');
+                    break;
+            }
+        }
+        
+        // Filtro por stock
+        if ($request->filled('stock') && $request->stock !== 'todos') {
+            switch ($request->stock) {
+                case 'bajo':
+                    $query->whereRaw('stock_actual <= stock_minimo');
+                    break;
+                case 'normal':
+                    $query->whereRaw('stock_actual > stock_minimo');
+                    break;
+                case 'agotado':
+                    $query->where('stock_actual', 0);
+                    break;
+            }
+        }
+        
+        $insumos = $query->orderBy('nombre')->get();
+        $proveedores = Proveedor::where('estado', 'Activo')->get();
         
         // Verificar insumos vencidos o próximos a vencer
         $this->checkExpiringProducts($insumos);
         
-        return view('insumos.index', compact('insumos', 'proveedores')); // Agregar 'proveedores'
+        // Contar totales para mostrar en los filtros
+        $totales = $this->contarTotales();
+        
+        return view('insumos.index', compact('insumos', 'proveedores', 'totales'));
+    }
+    
+    private function contarTotales()
+    {
+        $hoy = Carbon::now();
+        
+        return [
+            'todos' => Insumo::count(),
+            'disponibles' => Insumo::where('estado', 'Disponible')->count(),
+            'agotados' => Insumo::where('estado', 'Agotado')->count(),
+            'vencidos' => Insumo::where('estado', 'Vencido')->count(),
+            'stock_bajo' => Insumo::whereRaw('stock_actual <= stock_minimo')->count(),
+            'por_vencer' => Insumo::whereBetween('fecha_vencimiento', [$hoy, $hoy->copy()->addDays(30)])->count(),
+        ];
     }
 
     public function create()

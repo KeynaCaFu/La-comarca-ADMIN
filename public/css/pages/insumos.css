@@ -13,7 +13,12 @@
 }
 
 .badge-insumo {
-    background-color: #485a1a;
+   background-color: #ba7d0b;
+  color: white;
+  font-weight: 522;
+  padding: 1px 7px;
+  border-radius: 19px;
+ font-size: 0.75rem;
 }
 
 .insumo-card:hover {
