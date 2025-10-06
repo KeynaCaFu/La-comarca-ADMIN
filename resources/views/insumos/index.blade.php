@@ -64,235 +64,449 @@
 @endpush
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1><i class="fas fa-boxes"></i> Gestión de Insumos</h1>
-    <button type="button" class="btn btn-primary" onclick="openCreateModal()">
-        <i class="fas fa-plus"></i> Nuevo Insumo
-    </button>
-</div>
-
-<!-- Filtros Simples -->
-<div class="filtros-simples">
-    <form method="GET" action="{{ route('insumos.index') }}" id="filtrosForm">
-        <div class="row align-items-end">
-            <!-- Búsqueda por nombre -->
-            <div class="col-md-4">
-                <label class="form-label fw-bold">🔍 Buscar por nombre:</label>
-                <input type="text" 
-                       class="form-control" 
-                       name="buscar" 
-                       value="{{ request('buscar') }}" 
-                       placeholder="Escribe el nombre del insumo..."
-                       onkeyup="buscarEnTiempoReal()">
-            </div>
-            
-            <!-- Botón de limpiar -->
-            <div class="col-md-2">
-                <button type="button" class="btn btn-outline-secondary w-100" onclick="limpiarFiltros()">
-                    <i class="fas fa-eraser"></i> Limpiar
+<div class="container-fluid">
+    <!-- Header responsive -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                <h1 class="h3 mb-0"><i class="fas fa-boxes me-2"></i> Gestión de Insumos</h1>
+                <button type="button" class="btn btn-primary btn-responsive" onclick="openCreateModal()">
+                    <i class="fas fa-plus me-1"></i> 
+                    <span class="d-none d-sm-inline">Nuevo Insumo</span>
+                    <span class="d-sm-none">Nuevo</span>
                 </button>
             </div>
-            
-            <!-- Mostrar total -->
-            <div class="col-md-6 text-end">
-                <span class="h5 text-muted">
-                    📦 Total: <strong>{{ $insumos->count() }}</strong> de <strong>{{ $totales['todos'] }}</strong> insumos
-                </span>
+        </div>
+    </div>
+
+    <!-- Filtros Responsivos -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0"><i class="fas fa-filter me-2"></i>Filtros de Búsqueda</h6>
+                        <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#filtrosCollapse" aria-expanded="false">
+                            <i class="fas fa-chevron-down" id="filtrosIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse d-md-block" id="filtrosCollapse">
+                    <div class="card-body">
+                        <form method="GET" action="{{ route('insumos.index') }}" id="filtrosForm">
+                            <div class="row g-3 align-items-end">
+                                <!-- Búsqueda por nombre -->
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <label class="form-label fw-bold">🔍 Buscar por nombre:</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           name="buscar" 
+                                           value="{{ request('buscar') }}" 
+                                           placeholder="Escribe el nombre del insumo..."
+                                           onkeyup="buscarEnTiempoReal()">
+                                </div>
+                                
+                                <!-- Botón de limpiar -->
+                                <div class="col-12 col-md-3 col-lg-2">
+                                    <button type="button" class="btn btn-outline-secondary w-100" onclick="limpiarFiltros()">
+                                        <i class="fas fa-eraser me-1"></i> 
+                                        <span class="d-none d-sm-inline">Limpiar</span>
+                                    </button>
+                                </div>
+                                
+                                <!-- Mostrar total -->
+                                <div class="col-12 col-md-12 col-lg-6">
+                                    <div class="text-center text-lg-end">
+                                        <span class="h6 text-muted d-block d-lg-inline">
+                                            📦 Total: <strong class="text-primary">{{ $insumos->count() }}</strong> de <strong>{{ $totales['todos'] }}</strong> insumos
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
             </div>
         </div>
     </form>
 </div>
 
-<!-- Filtros Rápidos con Botones -->
-<div class="mb-4">
+    <!-- Filtros Rápidos con Botones Responsivos -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="mb-3">📊 <strong>Filtrar por Estado:</strong></h6>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <a href="{{ route('insumos.index') }}" 
+                           class="btn btn-filtro {{ !request('estado') ? 'activo' : '' }}">
+                            📋 Todos <span class="contador-filtro">{{ $totales['todos'] }}</span>
+                        </a>
+                        
+                        <a href="{{ route('insumos.index', ['estado' => 'Disponible']) }}" 
+                           class="btn btn-filtro {{ request('estado') == 'Disponible' ? 'activo' : '' }}">
+                            ✅ Disponibles <span class="contador-filtro">{{ $totales['disponibles'] }}</span>
+                        </a>
+                        
+                        <a href="{{ route('insumos.index', ['estado' => 'Agotado']) }}" 
+                           class="btn btn-filtro {{ request('estado') == 'Agotado' ? 'activo' : '' }}">
+                            ❌ Agotados <span class="contador-filtro">{{ $totales['agotados'] }}</span>
+                        </a>
+                        
+                        <a href="{{ route('insumos.index', ['estado' => 'Vencido']) }}" 
+                           class="btn btn-filtro {{ request('estado') == 'Vencido' ? 'activo' : '' }}">
+                            💀 Vencidos <span class="contador-filtro">{{ $totales['vencidos'] }}</span>
+                        </a>
+                    </div>
+                    
+                    <h6 class="mb-3">⚠️ <strong>Filtros de Alerta:</strong></h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ route('insumos.index', ['stock' => 'bajo']) }}" 
+                           class="btn btn-filtro {{ request('stock') == 'bajo' ? 'activo' : '' }}">
+                            📉 Stock Bajo <span class="contador-filtro">{{ $totales['stock_bajo'] }}</span>
+                        </a>
+                        
+                        <a href="{{ route('insumos.index', ['vencimiento' => 'por_vencer']) }}" 
+                           class="btn btn-filtro {{ request('vencimiento') == 'por_vencer' ? 'activo' : '' }}">
+                            ⏰ Por Vencer <span class="contador-filtro">{{ $totales['por_vencer'] }}</span>
+                        </a>
+                        
+                        <a href="{{ route('insumos.index', ['vencimiento' => 'vencidos']) }}" 
+                           class="btn btn-filtro {{ request('vencimiento') == 'vencidos' ? 'activo' : '' }}">
+                            💀 Ya Vencidos
+                        </a>
+                        
+                        <a href="{{ route('insumos.index', ['vencimiento' => 'buenos']) }}" 
+                           class="btn btn-filtro {{ request('vencimiento') == 'buenos' ? 'activo' : '' }}">
+                            👍 En Buen Estado
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mostrar filtros activos -->
+    @if(request()->hasAny(['buscar', 'estado', 'stock', 'vencimiento']))
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <strong>🎯 Filtros activos:</strong>
+                @if(request('buscar'))
+                    <span class="badge bg-primary me-1">Buscar: "{{ request('buscar') }}"</span>
+                @endif
+                @if(request('estado'))
+                    <span class="badge bg-success me-1">Estado: {{ request('estado') }}</span>
+                @endif
+                @if(request('stock'))
+                    <span class="badge bg-warning me-1">Stock: {{ ucfirst(request('stock')) }}</span>
+                @endif
+                @if(request('vencimiento'))
+                    <span class="badge bg-info me-1">Vencimiento: {{ ucfirst(str_replace('_', ' ', request('vencimiento'))) }}</span>
+                @endif
+                
+                <a href="{{ route('insumos.index') }}" class="btn btn-sm btn-outline-secondary ms-2">
+                    <i class="fas fa-times"></i> Quitar todos los filtros
+                </a>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Alertas de validación automática -->
+    @if(session('warning'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle"></i> {{ session('warning') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    <!-- Tabla Responsive / Cards para móvil -->
     <div class="row">
-        <div class="col-md-12">
-            <h6 class="mb-3">📊 <strong>Filtrar por Estado:</strong></h6>
-            <div class="d-flex flex-wrap">
-                <a href="{{ route('insumos.index') }}" 
-                   class="btn btn-filtro {{ !request('estado') ? 'activo' : '' }}">
-                    📋 Todos <span class="contador-filtro">{{ $totales['todos'] }}</span>
-                </a>
-                
-                <a href="{{ route('insumos.index', ['estado' => 'Disponible']) }}" 
-                   class="btn btn-filtro {{ request('estado') == 'Disponible' ? 'activo' : '' }}">
-                    ✅ Disponibles <span class="contador-filtro">{{ $totales['disponibles'] }}</span>
-                </a>
-                
-                <a href="{{ route('insumos.index', ['estado' => 'Agotado']) }}" 
-                   class="btn btn-filtro {{ request('estado') == 'Agotado' ? 'activo' : '' }}">
-                    ❌ Agotados <span class="contador-filtro">{{ $totales['agotados'] }}</span>
-                </a>
-                
-                <a href="{{ route('insumos.index', ['estado' => 'Vencido']) }}" 
-                   class="btn btn-filtro {{ request('estado') == 'Vencido' ? 'activo' : '' }}">
-                    💀 Vencidos <span class="contador-filtro">{{ $totales['vencidos'] }}</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <h6 class="mb-3">⚠️ <strong>Filtros de Alerta:</strong></h6>
-            <div class="d-flex flex-wrap">
-                <a href="{{ route('insumos.index', ['stock' => 'bajo']) }}" 
-                   class="btn btn-filtro {{ request('stock') == 'bajo' ? 'activo' : '' }}">
-                    📉 Stock Bajo <span class="contador-filtro">{{ $totales['stock_bajo'] }}</span>
-                </a>
-                
-                <a href="{{ route('insumos.index', ['vencimiento' => 'por_vencer']) }}" 
-                   class="btn btn-filtro {{ request('vencimiento') == 'por_vencer' ? 'activo' : '' }}">
-                    ⏰ Por Vencer <span class="contador-filtro">{{ $totales['por_vencer'] }}</span>
-                </a>
-                
-                <a href="{{ route('insumos.index', ['vencimiento' => 'vencidos']) }}" 
-                   class="btn btn-filtro {{ request('vencimiento') == 'vencidos' ? 'activo' : '' }}">
-                    💀 Ya Vencidos
-                </a>
-                
-                <a href="{{ route('insumos.index', ['vencimiento' => 'buenos']) }}" 
-                   class="btn btn-filtro {{ request('vencimiento') == 'buenos' ? 'activo' : '' }}">
-                    👍 En Buen Estado
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Mostrar filtros activos -->
-@if(request()->hasAny(['buscar', 'estado', 'stock', 'vencimiento']))
-<div class="resumen-resultados">
-    <strong>🎯 Filtros activos:</strong>
-    @if(request('buscar'))
-        <span class="badge bg-primary">Buscar: "{{ request('buscar') }}"</span>
-    @endif
-    @if(request('estado'))
-        <span class="badge bg-success">Estado: {{ request('estado') }}</span>
-    @endif
-    @if(request('stock'))
-        <span class="badge bg-warning">Stock: {{ ucfirst(request('stock')) }}</span>
-    @endif
-    @if(request('vencimiento'))
-        <span class="badge bg-info">Vencimiento: {{ ucfirst(str_replace('_', ' ', request('vencimiento'))) }}</span>
-    @endif
-    
-    <a href="{{ route('insumos.index') }}" class="btn btn-sm btn-outline-secondary ms-2">
-        <i class="fas fa-times"></i> Quitar todos los filtros
-    </a>
-</div>
-@endif
-
-<!-- Alertas de validación automática -->
-@if(session('warning'))
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-triangle"></i> {{ session('warning') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-@endif
-
-<!-- Tabla de Insumos -->
-<div class="card">
-    <div class="card-body">
-        @if($insumos->count() > 0)
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Stock</th>
-                        <th>Precio</th>
-                        <th>Vencimiento</th>
-                        <th>Proveedores</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($insumos as $insumo)
-                    <tr class="{{ $insumo->estado == 'Vencido' ? 'table-danger' : ($insumo->stock_actual <= $insumo->stock_minimo ? 'table-warning' : '') }}">
-                        <td>{{ $insumo->insumo_id }}</td>
-                        <td>
-                            <strong>{{ $insumo->nombre }}</strong>
-                            <br>
-                            <small class="text-muted">{{ $insumo->unidad_medida }} - Cant: {{ $insumo->cantidad }}</small>
-                        </td>
-                        <td>
-                            <span class="badge bg-{{ $insumo->stock_actual > $insumo->stock_minimo ? 'success' : 'warning' }}">
-                                {{ $insumo->stock_actual }}
-                            </span>
-                            <small class="text-muted d-block">Mín: {{ $insumo->stock_minimo }}</small>
-                            @if($insumo->stock_actual <= $insumo->stock_minimo)
-                                <small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Stock bajo</small>
-                            @endif
-                        </td>
-                        <td>₡{{ number_format($insumo->precio, 0) }}</td>
-                        <td>
-                            @if($insumo->fecha_vencimiento)
-                                @php
-                                    $fechaVencimiento = \Carbon\Carbon::parse($insumo->fecha_vencimiento);
-                                    $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaVencimiento, false);
-                                @endphp
-                                
-                                <span class="badge bg-{{ $diasRestantes < 0 ? 'danger' : ($diasRestantes <= 30 ? 'warning' : 'success') }}">
-                                    {{ $fechaVencimiento->format('d/m/Y') }}
-                                </span>
-                                
-                                @if($diasRestantes < 0)
-                                    <small class="text-danger d-block"><i class="fas fa-skull-crossbones"></i> Vencido</small>
-                                @elseif($diasRestantes <= 30)
-                                    <small class="text-warning d-block"><i class="fas fa-clock"></i> {{ $diasRestantes }} días</small>
-                                @endif
-                            @else
-                                <span class="text-muted">Sin fecha</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if($insumo->proveedores->count() > 0)
-                                @foreach($insumo->proveedores->take(2) as $proveedor)
-                                    <span class="badge-insumo">{{ $proveedor->nombre }}</span>
-                                @endforeach
-                                @if($insumo->proveedores->count() > 2)
-                                    <span class="badge bg-secondary">+{{ $insumo->proveedores->count() - 2 }}</span>
-                                @endif
-                            @else
-                                <span class="text-muted">Sin proveedores</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if($insumo->estado == 'Disponible')
-                                <span class="badge bg-success">✅ {{ $insumo->estado }}</span>
-                            @elseif($insumo->estado == 'Agotado')
-                                <span class="badge bg-danger">❌ {{ $insumo->estado }}</span>
-                            @else
-                                <span class="badge bg-secondary">💀 {{ $insumo->estado }}</span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-info btn-sm" title="Ver detalles" onclick="openShowModal({{ $insumo->insumo_id }})">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-warning btn-sm" title="Editar" onclick="openEditModal({{ $insumo->insumo_id }})">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <form action="{{ route('insumos.destroy', $insumo->insumo_id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" 
-                                        onclick="return confirm('¿Estás seguro de eliminar este insumo?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+        <div class="col-12">
+            @if($insumos->count() > 0)
+                <!-- Vista Desktop - Tabla -->
+                <div class="d-none d-lg-block">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Stock</th>
+                                            <th>Precio</th>
+                                            <th>Vencimiento</th>
+                                            <th>Proveedores</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($insumos as $insumo)
+                                        <tr class="{{ $insumo->estado == 'Vencido' ? 'table-danger' : ($insumo->stock_actual <= $insumo->stock_minimo ? 'table-warning' : '') }}">
+                                            <td>{{ $insumo->insumo_id }}</td>
+                                            <td>
+                                                <strong>{{ $insumo->nombre }}</strong>
+                                                <br>
+                                                <small class="text-muted">{{ $insumo->unidad_medida }} - Cant: {{ $insumo->cantidad }}</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-{{ $insumo->stock_actual > $insumo->stock_minimo ? 'success' : 'warning' }}">
+                                                    {{ $insumo->stock_actual }}
+                                                </span>
+                                                <small class="text-muted d-block">Mín: {{ $insumo->stock_minimo }}</small>
+                                                @if($insumo->stock_actual <= $insumo->stock_minimo)
+                                                    <small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Stock bajo</small>
+                                                @endif
+                                            </td>
+                                            <td>₡{{ number_format($insumo->precio, 0) }}</td>
+                                            <td>
+                                                @if($insumo->fecha_vencimiento)
+                                                    @php
+                                                        $fechaVencimiento = \Carbon\Carbon::parse($insumo->fecha_vencimiento);
+                                                        $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaVencimiento, false);
+                                                    @endphp
+                                                    
+                                                    <span class="badge bg-{{ $diasRestantes < 0 ? 'danger' : ($diasRestantes <= 30 ? 'warning' : 'success') }}">
+                                                        {{ $fechaVencimiento->format('d/m/Y') }}
+                                                    </span>
+                                                    
+                                                    @if($diasRestantes < 0)
+                                                        <small class="text-danger d-block"><i class="fas fa-skull-crossbones"></i> Vencido</small>
+                                                    @elseif($diasRestantes <= 30)
+                                                        <small class="text-warning d-block"><i class="fas fa-clock"></i> {{ $diasRestantes }} días</small>
+                                                    @endif
+                                                @else
+                                                    <span class="text-muted">Sin fecha</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($insumo->proveedores->count() > 0)
+                                                    @foreach($insumo->proveedores->take(2) as $proveedor)
+                                                        <span class="badge-insumo">{{ $proveedor->nombre }}</span>
+                                                    @endforeach
+                                                    @if($insumo->proveedores->count() > 2)
+                                                        <span class="badge bg-secondary">+{{ $insumo->proveedores->count() - 2 }}</span>
+                                                    @endif
+                                                @else
+                                                    <span class="text-muted">Sin proveedores</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($insumo->estado == 'Disponible')
+                                                    <span class="badge bg-success">✅ {{ $insumo->estado }}</span>
+                                                @elseif($insumo->estado == 'Agotado')
+                                                    <span class="badge bg-danger">❌ {{ $insumo->estado }}</span>
+                                                @else
+                                                    <span class="badge bg-secondary">💀 {{ $insumo->estado }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-sm btn-info" onclick="viewInsumo({{ $insumo->insumo_id }})" title="Ver detalles">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-warning" onclick="editInsumo({{ $insumo->insumo_id }})" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteInsumo({{ $insumo->insumo_id }})" title="Eliminar">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @else
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vista Mobile/Tablet - Cards -->
+                <div class="d-lg-none">
+                    <div class="row g-3">
+                        @foreach($insumos as $insumo)
+                        <div class="col-12">
+                            <div class="card insumo-card {{ $insumo->estado == 'Vencido' ? 'border-danger' : ($insumo->stock_actual <= $insumo->stock_minimo ? 'border-warning' : 'border-success') }}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <h6 class="card-title mb-1">{{ $insumo->nombre }}</h6>
+                                            <p class="text-muted small mb-2">ID: {{ $insumo->insumo_id }} | {{ $insumo->unidad_medida }} - Cant: {{ $insumo->cantidad }}</p>
+                                        </div>
+                                        <div class="col-4 text-end">
+                                            @if($insumo->estado == 'Disponible')
+                                                <span class="badge bg-success">✅</span>
+                                            @elseif($insumo->estado == 'Agotado')
+                                                <span class="badge bg-danger">❌</span>
+                                            @else
+                                                <span class="badge bg-secondary">💀</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <small class="text-muted">Stock:</small>
+                                            <div>
+                                                <span class="badge bg-{{ $insumo->stock_actual > $insumo->stock_minimo ? 'success' : 'warning' }} me-1">
+                                                    {{ $insumo->stock_actual }}
+                                                </span>
+                                                <small class="text-muted">/ Mín: {{ $insumo->stock_minimo }}</small>
+                                            </div>
+                                            @if($insumo->stock_actual <= $insumo->stock_minimo)
+                                                <small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Stock bajo</small>
+                                            @endif
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">Precio:</small>
+                                            <div class="fw-bold">₡{{ number_format($insumo->precio, 0) }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    @if($insumo->fecha_vencimiento)
+                                        @php
+                                            $fechaVencimiento = \Carbon\Carbon::parse($insumo->fecha_vencimiento);
+                                            $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaVencimiento, false);
+                                        @endphp
+                                        <div class="mb-2">
+                                            <small class="text-muted">Vencimiento:</small>
+                                            <div>
+                                                <span class="badge bg-{{ $diasRestantes < 0 ? 'danger' : ($diasRestantes <= 30 ? 'warning' : 'success') }}">
+                                                    {{ $fechaVencimiento->format('d/m/Y') }}
+                                                </span>
+                                                @if($diasRestantes < 0)
+                                                    <small class="text-danger"><i class="fas fa-skull-crossbones"></i> Vencido</small>
+                                                @elseif($diasRestantes <= 30)
+                                                    <small class="text-warning"><i class="fas fa-clock"></i> {{ $diasRestantes }} días</small>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    @if($insumo->proveedores->count() > 0)
+                                        <div class="mb-3">
+                                            <small class="text-muted">Proveedores:</small>
+                                            <div>
+                                                @foreach($insumo->proveedores->take(2) as $proveedor)
+                                                    <span class="badge bg-light text-dark me-1">{{ $proveedor->nombre }}</span>
+                                                @endforeach
+                                                @if($insumo->proveedores->count() > 2)
+                                                    <span class="badge bg-secondary">+{{ $insumo->proveedores->count() - 2 }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-sm btn-info flex-fill" onclick="viewInsumo({{ $insumo->insumo_id }})">
+                                            <i class="fas fa-eye me-1"></i>Ver
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-warning flex-fill" onclick="editInsumo({{ $insumo->insumo_id }})">
+                                            <i class="fas fa-edit me-1"></i>Editar
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger flex-fill" onclick="deleteInsumo({{ $insumo->insumo_id }})">
+                                            <i class="fas fa-trash me-1"></i>Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Vista Desktop - Tabla -->
+                <div class="d-none d-lg-block">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Stock</th>
+                                    <th>Precio</th>
+                                    <th>Estado</th>
+                                    <th>Vencimiento</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($insumos as $insumo)
+                                <tr>
+                                    <td>{{ $insumo->insumo_id }}</td>
+                                    <td>
+                                        <strong>{{ $insumo->nombre }}</strong><br>
+                                        <small class="text-muted">{{ $insumo->unidad_medida }} - {{ $insumo->cantidad }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ $insumo->stock_actual > $insumo->stock_minimo ? 'success' : 'warning' }}">
+                                            {{ $insumo->stock_actual }}
+                                        </span>
+                                        <small class="text-muted d-block">Mín: {{ $insumo->stock_minimo }}</small>
+                                        @if($insumo->stock_actual <= $insumo->stock_minimo)
+                                            <small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Stock bajo</small>
+                                        @endif
+                                    </td>
+                                    <td>₡{{ number_format($insumo->precio, 0) }}</td>
+                                    <td>
+                                        @if($insumo->estado == 'Disponible')
+                                            <span class="badge bg-success">✅ {{ $insumo->estado }}</span>
+                                        @elseif($insumo->estado == 'Agotado')
+                                            <span class="badge bg-danger">❌ {{ $insumo->estado }}</span>
+                                        @else
+                                            <span class="badge bg-secondary">💀 {{ $insumo->estado }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($insumo->fecha_vencimiento)
+                                            @php
+                                                $fechaVencimiento = \Carbon\Carbon::parse($insumo->fecha_vencimiento);
+                                                $diasRestantes = \Carbon\Carbon::now()->diffInDays($fechaVencimiento, false);
+                                            @endphp
+                                            <span class="badge bg-{{ $diasRestantes < 0 ? 'danger' : ($diasRestantes <= 30 ? 'warning' : 'success') }}">
+                                                {{ $fechaVencimiento->format('d/m/Y') }}
+                                            </span>
+                                            @if($diasRestantes < 0)
+                                                <small class="text-danger d-block"><i class="fas fa-skull-crossbones"></i> Vencido</small>
+                                            @elseif($diasRestantes <= 30)
+                                                <small class="text-warning d-block"><i class="fas fa-clock"></i> {{ $diasRestantes }} días</small>
+                                            @endif
+                                        @else
+                                            <span class="text-muted">Sin fecha</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-info btn-sm" title="Ver detalles" onclick="openShowModal({{ $insumo->insumo_id }})">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm" title="Editar" onclick="openEditModal({{ $insumo->insumo_id }})">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form action="{{ route('insumos.destroy', $insumo->insumo_id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" 
+                                                    onclick="return confirm('¿Estás seguro de eliminar este insumo?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @else
         <div class="text-center py-5">
             @if(request()->hasAny(['buscar', 'estado', 'stock', 'vencimiento']))
                 <i class="fas fa-search fa-3x text-muted mb-3"></i>

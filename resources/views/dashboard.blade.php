@@ -5,66 +5,78 @@
 @section('content')
 <!-- Dashboard Content -->
 <div class="dashboard-content">
-    <div class="row">
-        <!-- Stats Cards -->
-        <div class="col-lg-3 col-md-6 mb-4">
+    <!-- Mobile Welcome Header -->
+    <div class="d-lg-none mb-4">
+        <div class="mobile-welcome-card">
+            <h4 class="text-primary mb-2">¡Bienvenido!</h4>
+            <p class="text-muted mb-0">Gestiona tu inventario desde aquí</p>
+        </div>
+    </div>
+
+    <!-- Stats Cards - Responsive Grid -->
+    <div class="row g-3 g-md-4 mb-4">
+        <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-icon bg-primary">
                     <i class="fas fa-boxes"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="totalInsumos">0</h3>
-                    <p>Total Insumos</p>
+                    <p class="d-none d-sm-block">Total Insumos</p>
+                    <p class="d-sm-none">Insumos</p>
                 </div>
-                <div class="stat-trend">
+                <div class="stat-trend d-none d-md-block">
                     <i class="fas fa-arrow-up text-success"></i>
                     <span class="text-success">+12%</span>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-icon bg-success">
                     <i class="fas fa-truck"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="totalProveedores">0</h3>
-                    <p>Total Proveedores</p>
+                    <p class="d-none d-sm-block">Total Proveedores</p>
+                    <p class="d-sm-none">Proveedores</p>
                 </div>
-                <div class="stat-trend">
+                <div class="stat-trend d-none d-md-block">
                     <i class="fas fa-arrow-up text-success"></i>
                     <span class="text-success">+5%</span>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-icon bg-warning">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="insumosLowStock">0</h3>
-                    <p>Stock Bajo</p>
+                    <p class="d-none d-sm-block">Stock Bajo</p>
+                    <p class="d-sm-none">Stock</p>
                 </div>
-                <div class="stat-trend">
+                <div class="stat-trend d-none d-md-block">
                     <i class="fas fa-arrow-down text-warning"></i>
                     <span class="text-warning">-2</span>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-icon bg-info">
                     <i class="fas fa-dollar-sign"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="valorTotal">₡0</h3>
-                    <p>Valor Total Inventario</p>
+                    <p class="d-none d-sm-block">Valor Total Inventario</p>
+                    <p class="d-sm-none">Valor</p>
                 </div>
-                <div class="stat-trend">
+                <div class="stat-trend d-none d-md-block">
                     <i class="fas fa-arrow-up text-success"></i>
                     <span class="text-success">+8%</span>
                 </div>
@@ -73,9 +85,9 @@
     </div>
 
     <!-- Quick Actions & Recent Activity Row -->
-    <div class="row">
+    <div class="row g-3 g-md-4">
         <!-- Quick Actions -->
-        <div class="col-lg-6 mb-4">
+        <div class="col-12 col-lg-6 mb-4">
             <div class="action-card">
                 <div class="card-header">
                     <h5><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h5>
@@ -88,7 +100,7 @@
                             </div>
                             <div class="action-text">
                                 <span class="action-title">Nuevo Insumo</span>
-                                <span class="action-subtitle">Agregar producto al inventario</span>
+                                <span class="action-subtitle d-none d-md-block">Agregar producto al inventario</span>
                             </div>
                         </a>
                         
@@ -98,7 +110,7 @@
                             </div>
                             <div class="action-text">
                                 <span class="action-title">Nuevo Proveedor</span>
-                                <span class="action-subtitle">Registrar nuevo proveedor</span>
+                                <span class="action-subtitle d-none d-md-block">Registrar nuevo proveedor</span>
                             </div>
                         </a>
                         
@@ -108,7 +120,7 @@
                             </div>
                             <div class="action-text">
                                 <span class="action-title">Ver Reportes</span>
-                                <span class="action-subtitle">Estadísticas y análisis</span>
+                                <span class="action-subtitle d-none d-md-block">Estadísticas y análisis</span>
                             </div>
                         </a>
                         
@@ -118,7 +130,7 @@
                             </div>
                             <div class="action-text">
                                 <span class="action-title">Exportar Datos</span>
-                                <span class="action-subtitle">Descargar información</span>
+                                <span class="action-subtitle d-none d-md-block">Descargar información</span>
                             </div>
                         </a>
                     </div>
@@ -127,8 +139,8 @@
         </div>
         
         <!-- Recent Activity -->
-        <div class="col-lg-6 mb-4">
-            <div class="action-card">
+        <div class="col-12 col-lg-6 mb-4">
+            <div class="action-card recent-activity-card">
                 <div class="card-header">
                     <h5><i class="fas fa-history me-2"></i>Actividad Reciente</h5>
                 </div>
@@ -139,9 +151,9 @@
                                 <i class="fas fa-check"></i>
                             </div>
                             <div class="activity-content">
-                                <h6>Sistema iniciado correctamente</h6>
-                                <p class="text-muted">Bienvenido a La Comarca Admin</p>
-                                <small class="text-muted">Hace un momento</small>
+                                <div class="activity-title">Sistema iniciado correctamente</div>
+                                <p class="text-muted mb-1 d-none d-sm-block">Bienvenido a La Comarca Admin</p>
+                                <div class="activity-time">Hace un momento</div>
                             </div>
                         </div>
                         
@@ -150,9 +162,9 @@
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
                             <div class="activity-content">
-                                <h6>Dashboard cargado</h6>
-                                <p class="text-muted">Estadísticas actualizadas</p>
-                                <small class="text-muted">Ahora</small>
+                                <div class="activity-title">Dashboard cargado</div>
+                                <p class="text-muted mb-1 d-none d-sm-block">Estadísticas actualizadas</p>
+                                <div class="activity-time">Ahora</div>
                             </div>
                         </div>
                         
@@ -161,9 +173,9 @@
                                 <i class="fas fa-database"></i>
                             </div>
                             <div class="activity-content">
-                                <h6>Base de datos conectada</h6>
-                                <p class="text-muted">Conexión establecida con bdsage</p>
-                                <small class="text-muted">Hace 1 minuto</small>
+                                <div class="activity-title">Base de datos conectada</div>
+                                <p class="text-muted mb-1 d-none d-sm-block">Conexión establecida con bdsage</p>
+                                <div class="activity-time">Hace 1 minuto</div>
                             </div>
                         </div>
                     </div>
@@ -172,18 +184,19 @@
         </div>
     </div>
 
-    <!-- Additional Info Row -->
-    <div class="row">
+    <!-- Additional Info Row - Responsive Grid -->
+    <div class="row g-3 g-md-4">
         <!-- Low Stock Alert -->
-        <div class="col-lg-4 mb-4">
+        <div class="col-12 col-md-6 col-lg-4 mb-3 mb-lg-4">
             <div class="alert-card alert-warning">
                 <div class="alert-header">
                     <i class="fas fa-exclamation-triangle"></i>
                     <h6>Alerta de Stock Bajo</h6>
                 </div>
                 <div class="alert-body">
-                    <p>Hay productos que requieren atención</p>
-                    <button class="btn btn-warning btn-sm" onclick="checkLowStock()">
+                    <p class="d-none d-sm-block">Hay productos que requieren atención</p>
+                    <p class="d-sm-none">Productos necesitan atención</p>
+                    <button class="btn btn-warning btn-sm btn-responsive" onclick="checkLowStock()">
                         Ver Productos
                     </button>
                 </div>
@@ -191,15 +204,16 @@
         </div>
         
         <!-- System Status -->
-        <div class="col-lg-4 mb-4">
+        <div class="col-12 col-md-6 col-lg-4 mb-3 mb-lg-4">
             <div class="alert-card alert-success">
                 <div class="alert-header">
                     <i class="fas fa-check-circle"></i>
                     <h6>Estado del Sistema</h6>
                 </div>
                 <div class="alert-body">
-                    <p>Todos los servicios funcionando correctamente</p>
-                    <button class="btn btn-success btn-sm" onclick="checkSystemStatus()">
+                    <p class="d-none d-sm-block">Todos los servicios funcionando correctamente</p>
+                    <p class="d-sm-none">Sistema funcionando</p>
+                    <button class="btn btn-success btn-sm btn-responsive" onclick="checkSystemStatus()">
                         Ver Detalles
                     </button>
                 </div>
@@ -207,15 +221,16 @@
         </div>
         
         <!-- Quick Tips -->
-        <div class="col-lg-4 mb-4">
+        <div class="col-12 col-md-12 col-lg-4 mb-3 mb-lg-4">
             <div class="alert-card alert-info">
                 <div class="alert-header">
                     <i class="fas fa-lightbulb"></i>
                     <h6>Consejo del Día</h6>
                 </div>
                 <div class="alert-body">
-                    <p>Mantén siempre actualizado el stock mínimo de tus productos</p>
-                    <button class="btn btn-info btn-sm" onclick="showTips()">
+                    <p class="d-none d-sm-block">Mantén siempre actualizado el stock mínimo de tus productos</p>
+                    <p class="d-sm-none">Actualiza el stock mínimo</p>
+                    <button class="btn btn-info btn-sm btn-responsive" onclick="showTips()">
                         Más Consejos
                     </button>
                 </div>
@@ -226,334 +241,53 @@
 @endsection
 
 @push('styles')
+<link href="{{ asset('css/pages/dashboard.css') }}" rel="stylesheet">
 <style>
-/* Dashboard Content */
-.dashboard-content {
-    padding: 30px;
-    background: #f8f9fa;
-    min-height: calc(100vh - 80px);
-}
-
-/* Enhanced Stat Cards */
-.stat-card {
-    background: white;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #485a1a, #ff9900);
-}
-
-.stat-icon {
-    width: 65px;
-    height: 65px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-    position: relative;
-}
-
-.stat-icon.bg-primary {
-    background: linear-gradient(135deg, #485a1a, #5a6d20);
-}
-
-.stat-icon.bg-success {
-    background: linear-gradient(135deg, #28a745, #20c997);
-}
-
-.stat-icon.bg-warning {
-    background: linear-gradient(135deg, #ffc107, #ff9900);
-}
-
-.stat-icon.bg-info {
-    background: linear-gradient(135deg, #17a2b8, #007bff);
-}
-
-.stat-icon i {
-    font-size: 1.8rem;
-    color: white;
-}
-
-.stat-info {
-    flex: 1;
-}
-
-.stat-info h3 {
-    margin: 0;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #232c0c;
-    line-height: 1;
-}
-
-.stat-info p {
-    margin: 5px 0 0 0;
-    color: #6c757d;
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-.stat-trend {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.stat-trend i {
-    font-size: 1.2rem;
-    margin-bottom: 2px;
-}
-
-.stat-trend span {
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-/* Enhanced Action Cards */
-.action-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    height: 100%;
-    transition: all 0.3s ease;
-}
-
-.action-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-.action-card .card-header {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    border-bottom: 1px solid #e9ecef;
-    padding: 20px 25px;
-    border-radius: 15px 15px 0 0;
-    border-bottom: none;
-}
-
-.action-card .card-header h5 {
-    margin: 0;
-    color: #232c0c;
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.action-card .card-body {
-    padding: 25px;
-}
-
-/* Quick Actions Grid */
-.quick-actions-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-}
-
-.action-btn {
-    display: flex;
-    align-items: center;
-    padding: 18px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    background: #f8f9fa;
-}
-
-.action-btn:hover {
-    transform: translateX(5px);
-    text-decoration: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.action-btn-primary:hover {
-    background: #485a1a;
-    color: white;
-    border-color: #485a1a;
-}
-
-.action-btn-success:hover {
-    background: #28a745;
-    color: white;
-    border-color: #28a745;
-}
-
-.action-btn-info:hover {
-    background: #17a2b8;
-    color: white;
-    border-color: #17a2b8;
-}
-
-.action-btn-warning:hover {
-    background: #ffc107;
-    color: #212529;
-    border-color: #ffc107;
-}
-
-.action-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    background: rgba(72, 90, 26, 0.1);
-    color: #485a1a;
-}
-
-.action-btn:hover .action-icon {
-    background: rgba(255, 255, 255, 0.2);
-    color: inherit;
-}
-
-.action-icon i {
-    font-size: 1.4rem;
-}
-
-.action-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.action-title {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 2px;
-    color: #232c0c;
-}
-
-.action-btn:hover .action-title {
-    color: inherit;
-}
-
-.action-subtitle {
-    font-size: 0.85rem;
-    color: #6c757d;
-    opacity: 0.8;
-}
-
-.action-btn:hover .action-subtitle {
-    color: inherit;
-    opacity: 0.9;
-}
-
-/* Activity Timeline */
-.activity-timeline {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.activity-item {
-    display: flex;
-    align-items: flex-start;
-    padding: 15px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.activity-item:last-child {
-    border-bottom: none;
-}
-
-.activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    flex-shrink: 0;
-}
-
-.activity-icon i {
-    font-size: 1rem;
-    color: white;
-}
-
-.activity-content h6 {
-    margin: 0 0 5px 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #232c0c;
-}
-
-.activity-content p {
-    margin: 0 0 5px 0;
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-.activity-content small {
-    font-size: 0.75rem;
-    color: #adb5bd;
-}
-
 /* Alert Cards */
 .alert-card {
     background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
     height: 100%;
+    transition: var(--transition);
     border-left: 4px solid;
-    transition: all 0.3s ease;
 }
 
 .alert-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-lg);
 }
 
-.alert-card.alert-warning {
-    border-left-color: #ffc107;
+.alert-warning {
+    border-left-color: #f39c12;
 }
 
-.alert-card.alert-success {
-    border-left-color: #28a745;
+.alert-success {
+    border-left-color: var(--success);
 }
 
-.alert-card.alert-info {
+.alert-info {
     border-left-color: #17a2b8;
 }
 
 .alert-header {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
 .alert-header i {
-    font-size: 1.2rem;
-    margin-right: 10px;
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
 }
 
 .alert-warning .alert-header i {
-    color: #ffc107;
+    color: #f39c12;
 }
 
 .alert-success .alert-header i {
-    color: #28a745;
+    color: var(--success);
 }
 
 .alert-info .alert-header i {
@@ -563,65 +297,32 @@
 .alert-header h6 {
     margin: 0;
     font-weight: 600;
-    color: #232c0c;
+    color: var(--dark);
 }
 
 .alert-body p {
-    margin-bottom: 15px;
-    color: #6c757d;
-    font-size: 0.9rem;
+    color: var(--gray);
+    margin-bottom: 1rem;
+    line-height: 1.4;
 }
 
-.alert-body .btn {
-    font-size: 0.85rem;
-    padding: 6px 15px;
-}
-
-/* Responsive Design */
-@media (max-width: 991.98px) {
-    .dashboard-content {
-        padding: 20px 15px;
+@media (max-width: 576px) {
+    .alert-card {
+        padding: 1.25rem;
     }
     
-    .quick-actions-grid {
-        gap: 10px;
+    .alert-header i {
+        font-size: 1.25rem;
+        margin-right: 0.5rem;
     }
     
-    .action-btn {
-        padding: 15px;
+    .alert-header h6 {
+        font-size: 0.9rem;
     }
     
-    .stat-card {
-        margin-bottom: 20px;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .stat-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
-    }
-    
-    .stat-icon {
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-    
-    .stat-trend {
-        align-items: center;
-        margin-top: 10px;
-    }
-    
-    .action-btn {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
-    }
-    
-    .action-icon {
-        margin-right: 0;
-        margin-bottom: 10px;
+    .alert-body p {
+        font-size: 0.875rem;
+        margin-bottom: 0.75rem;
     }
 }
 </style>

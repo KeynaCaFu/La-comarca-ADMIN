@@ -1,0 +1,501 @@
+/* ========================================
+   FORMS (Mobile First)
+   ======================================== */
+
+.form-control, .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--sidebar-bg);
+    box-shadow: 0 0 0 0.2rem rgba(72, 90, 26, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+/* ========================================
+   ALERTS & NOTIFICATIONS
+   ======================================== */
+
+.alert {
+    border: none;
+    border-radius: var(--border-radius);
+    border-left: 4px solid;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.alert-success {
+    border-left-color: var(--success);
+    background-color: rgba(39, 174, 96, 0.1);
+    color: #155724;
+}
+
+.alert-danger {
+    border-left-color: var(--danger);
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #721c24;
+}
+
+.alert-dismissible {
+    position: relative;
+    padding-right: 4rem;
+}
+
+.btn-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+/* ========================================
+   BADGES & STATUS
+   ======================================== */
+
+.badge {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.badge-success, .bg-success {
+    background-color: var(--success) !important;
+    color: white !important;
+}
+
+.badge-warning {
+    background-color: #f39c12;
+    color: white;
+}
+
+.badge-danger {
+    background-color: var(--danger);
+    color: white;
+}
+
+.bg-secondary {
+    background-color: #6c757d !important;
+    color: white !important;
+}
+
+/* Estado específicos */
+.estado-disponible {
+    color: var(--success);
+}
+
+.estado-agotado {
+    color: var(--danger);
+}
+
+.estado-vencido {
+    color: #f39c12;
+}
+
+/* ========================================
+   UTILITIES
+   ======================================== */
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.text-primary { color: var(--primary) !important; }
+.text-secondary { color: var(--secondary) !important; }
+.bg-primary { background-color: var(--primary) !important; }
+.bg-secondary { background-color: var(--secondary) !important; }
+
+/* ========================================
+   TABLET RESPONSIVE (768px and up)
+   ======================================== */
+
+@media (min-width: 768px) {
+    .main-content {
+        padding: 1.5rem;
+    }
+
+    .btn-responsive {
+        width: auto;
+        margin-bottom: 0;
+    }
+
+    .stat-card {
+        padding: 2rem;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 1rem;
+    }
+
+    /* Improve header spacing */
+    .d-flex.justify-content-between {
+        gap: 1rem;
+    }
+
+    /* Better form layouts */
+    .form-control, .form-select {
+        font-size: 1rem;
+        padding: 0.875rem;
+    }
+
+    /* Improve cards grid */
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+/* ========================================
+   DESKTOP RESPONSIVE (992px and up)
+   ======================================== */
+
+@media (min-width: 992px) {
+    /* Reset mobile layout for desktop */
+    .container {
+        flex-direction: row;
+    }
+
+    .mobile-header {
+        display: none;
+    }
+
+    .mobile-menu-overlay {
+        display: none;
+    }
+
+    .sidebar {
+        position: relative;
+        left: 0;
+        width: 280px;
+        min-width: 280px;
+    }
+
+    .sidebar-close {
+        display: none;
+    }
+
+    .main-content {
+        margin-top: 0;
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    /* Show desktop header */
+    .header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(72, 90, 26, 0.1);
+    }
+
+    .header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0;
+        padding: 0;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0;
+    }
+
+    .user-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    /* Desktop stat cards */
+    .stat-card {
+        padding: 2.5rem;
+    }
+
+    .stat-info h3 {
+        font-size: 2.5rem;
+    }
+
+    /* Better button sizing */
+    .btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    /* Improved table spacing */
+    .table {
+        font-size: 1rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 1.25rem;
+    }
+
+    /* Better cards layout */
+    .card-container {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+}
+
+/* ========================================
+   LARGE DESKTOP (1200px and up)
+   ======================================== */
+
+@media (min-width: 1200px) {
+    .main-content {
+        padding: 2.5rem;
+    }
+
+    .sidebar {
+        width: 300px;
+        min-width: 300px;
+    }
+
+    .sidebar-menu a {
+        padding: 1rem 2rem;
+    }
+
+    .header h1 {
+        font-size: 2.25rem;
+    }
+
+    .stat-card {
+        padding: 3rem;
+    }
+}
+
+/* ========================================
+   EXTRA LARGE DESKTOP (1400px and up)
+   ======================================== */
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .sidebar {
+        width: 320px;
+        min-width: 320px;
+    }
+
+    .main-content {
+        padding: 3rem;
+    }
+}
+
+/* ========================================
+   LANDSCAPE MOBILE OPTIMIZATIONS
+   ======================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .sidebar {
+        padding-top: 0.5rem;
+    }
+
+    .sidebar-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .sidebar-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .sidebar-menu a {
+        padding: 0.75rem 1.5rem;
+    }
+
+    .mobile-header {
+        padding: 0.5rem 0;
+    }
+
+    .main-content {
+        margin-top: 60px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus states */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .sidebar {
+        border-right: 2px solid white;
+    }
+    
+    .sidebar-menu a {
+        border: 1px solid transparent;
+    }
+    
+    .sidebar-menu a:focus {
+        border-color: white;
+    }
+}
+
+/* ========================================
+   LEGACY SUPPORT & COMPATIBILITY
+   ======================================== */
+
+/* Modal overrides for existing modals */
+.modal-content {
+    border-radius: var(--border-radius);
+    border: none;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--sidebar-bg), #3a4a14);
+    color: white;
+    border-bottom: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #eee;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Navbar override para Bootstrap */
+.navbar {
+    background-color: var(--sidebar-bg) !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    transition: var(--transition);
+}
+
+.navbar-nav .nav-link.active {
+    background-color: var(--sidebar-active);
+    border-radius: 0.375rem;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: var(--sidebar-active);
+    border-radius: 0.375rem;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    .sidebar,
+    .mobile-header,
+    .mobile-menu-overlay {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .card, .stat-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+
+    .btn {
+        display: none !important;
+    }
+
+    .table {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* ========================================
+   BODY STATE CLASSES
+   ======================================== */
+
+body.sidebar-opened {
+    overflow: hidden;
+}
+
+/* ========================================
+   RESPONSIVE UTILITY CLASSES
+   ======================================== */
+
+.d-mobile-none {
+    display: none;
+}
+
+.d-desktop-none {
+    display: block;
+}
+
+@media (min-width: 992px) {
+    .d-mobile-none {
+        display: block;
+    }
+    
+    .d-desktop-none {
+        display: none;
+    }
+}

@@ -23,7 +23,12 @@ php artisan key:generate
 # Limpiar caché
 php artisan cache:clear
 php artisan config:clear
+php artisan route:clear
+php artisan view:clear
 php artisan config:cache
+
+# Regenerar autoloader (si es necesario)
+composer dump-autoload
 
 # Verificar que Laravel funciona
 php artisan --version
@@ -68,6 +73,23 @@ php artisan serve
 ### Error: "APP_KEY not set"
 - ✅ Falta generar la clave
 - 🔧 Ejecutar: `php artisan key:generate`
+
+### Error: "Filesystem error" o "unexpected token"
+- ✅ Cache corrupto o archivos malformados
+- 🔧 Ejecutar limpieza completa:
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+composer dump-autoload
+php artisan config:cache
+php artisan view:cache
+```
+
+### Error: "syntax error, unexpected token endforeach"
+- ✅ Estructura Blade malformada
+- 🔧 Limpiar cache de vistas: `php artisan view:clear`
 
 ---
 

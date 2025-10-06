@@ -1,4 +1,6 @@
-/* ESTILOS PARA MODALES PERSONALIZADOS */
+/* ========================================
+   RESPONSIVE MODALS - MOBILE FIRST DESIGN
+   ======================================== */
 
 .custom-modal {
     display: none;
@@ -16,13 +18,12 @@
 
 .modal-content {
     background-color: #fefefe;
-    margin: 2% auto;
+    margin: 1rem;
     padding: 0;
     border: none;
     border-radius: 12px;
-    width: 90%;
-    max-width: 800px;
-    max-height: 90vh;
+    width: calc(100% - 2rem);
+    max-height: calc(100vh - 2rem);
     overflow-y: auto;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s ease-out;
@@ -32,23 +33,455 @@
 .modal-header {
     background: linear-gradient(135deg, #485a1a, #5a6d20);
     color: white;
-    padding: 20px 25px;
+    padding: 1rem 1.25rem;
     border-radius: 12px 12px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid #ff9900;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .modal-header h3 {
     margin: 0;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 600;
+    flex: 1;
+    min-width: 0;
 }
 
 .modal-header h3 i {
-    margin-right: 10px;
+    margin-right: 0.5rem;
+}
+
+.close {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
     color: #ff9900;
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 1.25rem;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.modal-footer .btn {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   FORM STYLES IN MODALS
+   ======================================== */
+
+.modal-body .form-group {
+    margin-bottom: 1rem;
+}
+
+.modal-body .form-control,
+.modal-body .form-select {
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.modal-body .form-control:focus,
+.modal-body .form-select:focus {
+    border-color: #485a1a;
+    box-shadow: 0 0 0 0.2rem rgba(72, 90, 26, 0.25);
+}
+
+.modal-body .form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.modal-body .row {
+    margin-bottom: 1rem;
+}
+
+.modal-body .col-md-6,
+.modal-body .col-md-4 {
+    margin-bottom: 1rem;
+}
+
+/* ========================================
+   DETAIL SECTIONS IN MODALS
+   ======================================== */
+
+.detail-section {
+    margin-bottom: 1.5rem;
+}
+
+.detail-section h4 {
+    color: #485a1a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.detail-table th,
+.detail-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: top;
+}
+
+.detail-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    width: 35%;
+}
+
+.detail-table td {
+    color: #212529;
+}
+
+.proveedor-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.proveedor-card h5 {
+    color: #485a1a;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ========================================
+   TABLET RESPONSIVE (768px and up)
+   ======================================== */
+
+@media (min-width: 768px) {
+    .modal-content {
+        margin: 2rem auto;
+        width: 90%;
+        max-width: 700px;
+    }
+
+    .modal-header {
+        padding: 1.5rem 2rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1.3rem;
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .modal-footer {
+        padding: 1.5rem 2rem;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .modal-footer .btn {
+        width: auto;
+        min-width: 120px;
+        margin-left: 0.5rem;
+    }
+
+    .modal-body .col-md-6 {
+        width: 50%;
+        float: left;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .modal-body .col-md-4 {
+        width: 33.333333%;
+        float: left;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .detail-table th {
+        width: 30%;
+    }
+
+    .detail-table th,
+    .detail-table td {
+        padding: 1rem;
+    }
+}
+
+/* ========================================
+   DESKTOP RESPONSIVE (992px and up)
+   ======================================== */
+
+@media (min-width: 992px) {
+    .modal-content {
+        margin: 3rem auto;
+        width: 85%;
+        max-width: 800px;
+    }
+
+    .modal-header {
+        padding: 2rem 2.5rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .modal-body {
+        padding: 2.5rem;
+        max-height: calc(100vh - 300px);
+    }
+
+    .modal-footer {
+        padding: 2rem 2.5rem;
+    }
+
+    .detail-table {
+        font-size: 1rem;
+    }
+
+    .detail-table th,
+    .detail-table td {
+        padding: 1.25rem;
+    }
+
+    .proveedor-card {
+        padding: 1.5rem;
+    }
+}
+
+/* ========================================
+   LARGE DESKTOP (1200px and up)
+   ======================================== */
+
+@media (min-width: 1200px) {
+    .modal-content {
+        max-width: 900px;
+    }
+
+    .modal-body {
+        padding: 3rem;
+    }
+
+    .modal-header {
+        padding: 2rem 3rem;
+    }
+
+    .modal-footer {
+        padding: 2rem 3rem;
+    }
+}
+
+/* ========================================
+   LANDSCAPE MOBILE OPTIMIZATIONS
+   ======================================== */
+
+@media (max-height: 600px) and (orientation: landscape) {
+    .modal-content {
+        margin: 0.5rem;
+        width: calc(100% - 1rem);
+        max-height: calc(100vh - 1rem);
+    }
+
+    .modal-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+        max-height: calc(100vh - 150px);
+    }
+
+    .modal-footer {
+        padding: 0.75rem 1rem;
+    }
+
+    .close {
+        font-size: 1.5rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .custom-modal,
+    .modal-content {
+        animation: none;
+    }
+}
+
+.modal-header:focus-within,
+.modal-body:focus-within,
+.modal-footer:focus-within {
+    outline: none;
+}
+
+.close:focus {
+    outline: 2px solid #ff9900;
+    outline-offset: 2px;
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (prefers-contrast: high) {
+    .modal-content {
+        border: 2px solid #000;
+    }
+
+    .modal-header {
+        border-bottom: 2px solid #000;
+    }
+
+    .modal-footer {
+        border-top: 2px solid #000;
+    }
+
+    .detail-table th,
+    .detail-table td {
+        border: 1px solid #000;
+    }
+}
+
+/* ========================================
+   SPECIFIC MODAL TYPES
+   ======================================== */
+
+/* Large content modals */
+.modal-xl .modal-content {
+    max-width: 95%;
+}
+
+@media (min-width: 1200px) {
+    .modal-xl .modal-content {
+        max-width: 1140px;
+    }
+}
+
+/* Small modals */
+.modal-sm .modal-content {
+    max-width: 400px;
+}
+
+/* Full screen mobile modal */
+@media (max-width: 576px) {
+    .modal-fullscreen-sm-down .modal-content {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
+        max-height: 100vh;
+    }
+
+    .modal-fullscreen-sm-down .modal-header {
+        border-radius: 0;
+    }
+
+    .modal-fullscreen-sm-down .modal-footer {
+        border-radius: 0;
+    }
+}
+
+/* ========================================
+   LOADING AND ERROR STATES
+   ======================================== */
+
+.modal-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.modal-loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: #485a1a;
+}
+
+.modal-error {
+    text-align: center;
+    padding: 2rem;
+    color: #dc3545;
+}
+
+.modal-error i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
 }
 
 .close {

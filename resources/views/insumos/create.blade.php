@@ -3,31 +3,46 @@
 @section('title', 'Crear Nuevo Insumo')
 
 @section('content')
-<div class="row">
-    <div class="col-md-8 mx-auto">
-        <div class="card">
-            <div class="card-header">
-                <h3><i class="fas fa-plus"></i> Crear Nuevo Insumo</h3>
+<div class="container-fluid">
+    <!-- Header responsive -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                <h1 class="h3 mb-0"><i class="fas fa-plus me-2"></i> Crear Nuevo Insumo</h1>
+                <a href="{{ route('insumos.index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    <span class="d-none d-sm-inline">Volver a Insumos</span>
+                    <span class="d-sm-none">Volver</span>
+                </a>
             </div>
-            <div class="card-body">
-                <form action="{{ route('insumos.store') }}" method="POST">
-                    @csrf
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre del Insumo *</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required 
-                                       value="{{ old('nombre') }}" placeholder="Ej: Harina de Trigo">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-plus me-2"></i>Nuevo Insumo</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('insumos.store') }}" method="POST">
+                        @csrf
+                        
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre del Insumo *</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required 
+                                           value="{{ old('nombre') }}" placeholder="Ej: Harina de Trigo">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="unidad_medida" class="form-label">Unidad de Medida *</label>
-                                <input type="text" class="form-control" id="unidad_medida" name="unidad_medida" required 
-                                       value="{{ old('unidad_medida') }}" placeholder="Ej: kg, litro, unidad">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3">
+                                    <label for="unidad_medida" class="form-label">Unidad de Medida *</label>
+                                    <input type="text" class="form-control" id="unidad_medida" name="unidad_medida" required 
+                                           value="{{ old('unidad_medida') }}" placeholder="Ej: kg, litro, unidad">
+                                </div>
                             </div>
-                        </div>
                     </div>
 
                     <div class="row">
