@@ -4,11 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InsumoController;
 use App\Http\Controllers\ProveedorController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+
 
 // Ruta de bienvenida
 Route::get('/', function () {

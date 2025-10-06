@@ -24,7 +24,7 @@ class InsumoController extends Controller
             $query->where('estado', $request->estado);
         }
         
-        // Filtro por vencimiento (opciones simples)
+        // Filtro por vencimiento
         if ($request->filled('vencimiento') && $request->vencimiento !== 'todos') {
             $hoy = Carbon::now();
             
@@ -91,7 +91,7 @@ class InsumoController extends Controller
 
     public function store(Request $request)
     {
-        // Validaciones mejoradas
+        // Validaciones 
         $validatedData = $request->validate([
             'nombre' => [
                 'required',
@@ -134,7 +134,7 @@ class InsumoController extends Controller
             'proveedores' => 'array',
             'proveedores.*' => 'exists:tbproveedor,proveedor_id'
         ], [
-            // Mensajes personalizados mejorados
+            // Mensajes
             'nombre.required' => 'El nombre del insumo es obligatorio',
             'nombre.regex' => 'El nombre solo puede contener letras, espacios, guiones y puntos',
             'nombre.unique' => 'Ya existe un insumo con este nombre',
@@ -173,7 +173,7 @@ class InsumoController extends Controller
             'proveedores.*.exists' => 'Uno o más proveedores seleccionados no existen',
         ]);
 
-        // Validaciones de lógica de negocio
+        // Validaciones 
         $this->validateBusinessLogic($validatedData, $request);
 
         // Crear el insumo
@@ -213,7 +213,7 @@ class InsumoController extends Controller
     {
         $insumo = Insumo::findOrFail($id);
 
-        // Validaciones mejoradas (excluyendo el registro actual)
+        // Validaciones 
         $validatedData = $request->validate([
             'nombre' => [
                 'required',
@@ -256,7 +256,6 @@ class InsumoController extends Controller
             'proveedores' => 'array',
             'proveedores.*' => 'exists:tbproveedor,proveedor_id'
         ], [
-            // Mismos mensajes personalizados que en store()
             'nombre.required' => 'El nombre del insumo es obligatorio',
             'nombre.regex' => 'El nombre solo puede contener letras, espacios, guiones y puntos',
             'nombre.unique' => 'Ya existe otro insumo con este nombre',
@@ -292,7 +291,7 @@ class InsumoController extends Controller
             'estado.in' => 'El estado debe ser: Disponible, Agotado o Vencido',
         ]);
 
-        // Validaciones de lógica de negocio
+        // Validaciones 
         $this->validateBusinessLogic($validatedData, $request, $insumo);
 
         // Actualizar
@@ -338,9 +337,7 @@ class InsumoController extends Controller
         return view('insumos.partials.edit-modal', compact('insumo', 'proveedores'));
     }
 
-    /**
-     * Validaciones de lógica de negocio
-     */
+
     private function validateBusinessLogic($data, $request, $insumo = null)
     {
         $errors = [];
