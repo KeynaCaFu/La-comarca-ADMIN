@@ -92,7 +92,7 @@
                             </div>
                         </a>
                         
-                        <a href="{{ route('proveedor.index') }}" class="action-btn action-btn-success">
+                        <a href="{{ route('proveedores.index') }}" class="action-btn action-btn-success">
                             <div class="action-icon">
                                 <i class="fas fa-user-plus"></i>
                             </div>

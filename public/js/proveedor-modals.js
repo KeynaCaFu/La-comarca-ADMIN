@@ -73,7 +73,7 @@ class ProveedorModals {
         document.body.style.overflow = 'hidden';
         
         try {
-            const response = await fetch(`/proveedor/${proveedorId}/show-modal`);
+            const response = await fetch(`/proveedores/${proveedorId}/show-modal`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -111,7 +111,7 @@ class ProveedorModals {
         document.body.style.overflow = 'hidden';
         
         try {
-            const url = `/proveedor/${proveedorId}/edit-modal`;
+            const url = `/proveedores/${proveedorId}/edit-modal`;
             console.log('Fetching:', url);
             
             const response = await fetch(url);

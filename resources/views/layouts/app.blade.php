@@ -34,7 +34,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('proveedor.index') }}" class="{{ request()->routeIs('proveedor*') ? 'active' : '' }}">
+                        <a href="{{ route('proveedores.index') }}" class="{{ request()->routeIs('proveedores*') ? 'active' : '' }}">
                             <i class="fas fa-truck"></i> Proveedores
                         </a>
                     </li>

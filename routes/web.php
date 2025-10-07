@@ -30,7 +30,7 @@ Route::prefix('insumos')->name('insumos.')->group(function () {
 });
 
 // Rutas de Proveedores
-Route::prefix('proveedor')->name('proveedor.')->group(function () {
+Route::prefix('proveedores')->name('proveedores.')->group(function () {
     Route::get('/', [ProveedorController::class, 'index'])->name('index');
     Route::post('/', [ProveedorController::class, 'store'])->name('store');
     Route::get('/{id}', [ProveedorController::class, 'show'])->name('show');

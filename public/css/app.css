@@ -1,6 +1,3 @@
-/* ========================================
-   LA COMARCA - ESTILOS PERSONALIZADOS
-   ======================================== */
 
 :root {
     --primary: #181818; /* negro profundo */
@@ -509,7 +506,7 @@ tr:hover {
     color: #ffc107;
 }
 
-/* Navbar override para Bootstrap */
+
 .navbar {
     background-color: #232c0c !important;
 }
@@ -749,7 +746,7 @@ tr:hover {
     animation: fadeIn 0.5s ease-out forwards;
 }
 
-/* Custom Scrollbar */
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -763,9 +760,6 @@ tr:hover {
     border-radius: 4px;
 }
 
-/* ========================================
-   RESPONSIVE IMPROVEMENTS
-   ======================================== */
 
 /* Botones responsive mejorados */
 @media (max-width: 768px) {
