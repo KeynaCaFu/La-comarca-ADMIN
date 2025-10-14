@@ -2,125 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Proveedor;
-use App\Models\Insumo;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Data\ProveedorData;
+use App\Data\InsumoData; // si necesitas listar insumos en formularios
 
 class ProveedorController extends Controller
 {
+    protected $proveedorData;
+    protected $insumoData;
+
+    public function __construct(ProveedorData $proveedorData, InsumoData $insumoData)
+    {
+        $this->proveedorData = $proveedorData;
+        $this->insumoData = $insumoData;
+    }
+
     public function index()
     {
-        $proveedores = Proveedor::with('insumos')->get();
-        $insumos = Insumo::all(); // Obtener TODOS los insumos
-        
-        return view('proveedor.index', compact('proveedores', 'insumos'));
+        $proveedores = $this->proveedorData->all();
+        return view('proveedor.index', compact('proveedores'));
+    }
+
+    public function show($id)
+    {
+        $proveedor = $this->proveedorData->find($id);
+        if (! $proveedor) {
+            return redirect()->route('proveedor.index')->with('warning', 'Proveedor no encontrado.');
+        }
+        return response()->json($proveedor);
     }
 
     public function create()
     {
-        $insumos = Insumo::all(); // Obtener TODOS los insumos
+        $insumos = $this->insumoData->all(); // Obtener TODOS los insumos
         return view('proveedor.create', compact('insumos'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'telefono' => 'required|string|max:20',
-            'correo' => 'required|email',
-            'direccion' => 'required|string',
-            'total_compras' => 'required|numeric|min:0',
-            'estado' => 'required|in:Activo,Inactivo',
-            'insumos' => 'nullable|array'
+        $data = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:50',
+            'direccion' => 'nullable|string|max:500',
+            'email' => 'nullable|email|max:255',
         ]);
 
-        $proveedor = Proveedor::create($request->all());
+        $id = $this->proveedorData->create($data);
 
-        // Sincronizar insumos
-        if ($request->has('insumos')) {
-            $proveedor->insumos()->sync($request->insumos);
-        }
-
-        // Respuesta para AJAX o redirección normal
-        if ($request->wantsJson() || $request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Proveedor creado exitosamente.',
-                'proveedor' => $proveedor
-            ]);
-        }
-
-        return redirect()->route('proveedores.index')
-            ->with('success', 'Proveedor creado exitosamente.');
-    }
-
-    public function show($id)
-    {
-        $proveedor = Proveedor::with('insumos')->findOrFail($id);
-        return view('proveedor.show', compact('proveedor'));
-    }
-
-    public function edit($id)
-    {
-        $proveedor = Proveedor::with('insumos')->findOrFail($id);
-        $insumos = Insumo::where('estado', 'Disponible')->get();
-        return view('proveedor.edit', compact('proveedor', 'insumos'));
+        return redirect()->route('proveedor.index')->with('success', 'Proveedor creado.');
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'telefono' => 'required|string|max:20',
-            'correo' => 'required|email',
-            'direccion' => 'required|string',
-            'total_compras' => 'required|numeric|min:0',
-            'estado' => 'required|in:Activo,Inactivo',
-            'insumos' => 'nullable|array'
+        $data = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:50',
+            'direccion' => 'nullable|string|max:500',
+            'email' => 'nullable|email|max:255',
         ]);
 
-        $proveedor = Proveedor::findOrFail($id);
-        $proveedor->update($request->all());
+        $this->proveedorData->update($id, $data);
 
-        // Sincronizar insumos
-        $proveedor->insumos()->sync($request->insumos ?? []);
-
-        // Respuesta para AJAX o redirección normal
-        if ($request->wantsJson() || $request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Proveedor actualizado exitosamente.',
-                'proveedor' => $proveedor
-            ]);
-        }
-
-        return redirect()->route('proveedores.index')
-            ->with('success', 'Proveedor actualizado exitosamente.');
+        return redirect()->route('proveedor.index')->with('success', 'Proveedor actualizado.');
     }
 
     public function destroy($id)
     {
-        $proveedor = Proveedor::findOrFail($id);
-        $proveedor->insumos()->detach(); // Eliminar relaciones
-        $proveedor->delete();
-
-        return redirect()->route('proveedores.index')
-            ->with('success', 'Proveedor eliminado exitosamente.');
+        $this->proveedorData->delete($id);
+        return redirect()->route('proveedor.index')->with('success', 'Proveedor eliminado.');
     }
 
     // Método para cargar el contenido del modal de detalles
     public function showModal($id)
     {
-        $proveedor = Proveedor::with('insumos')->findOrFail($id);
+        $proveedor = $this->proveedorData->find($id);
         return view('proveedor.partials.show-modal', compact('proveedor'));
     }
 
     // Método para cargar el contenido del modal de editar
     public function editModal($id)
     {
-        $proveedor = Proveedor::with('insumos')->findOrFail($id);
-        $insumos = Insumo::all(); // Obtener TODOS los insumos
+        $proveedor = $this->proveedorData->find($id);
+        $insumos = $this->insumoData->all(); // Obtener TODOS los insumos
         
         return view('proveedor.partials.edit-modal', compact('proveedor', 'insumos'));
     }

@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Data\\InsumoData' => $baseDir . '/app/Data/InsumoData.php',
+    'App\\Data\\ProveedorData' => $baseDir . '/app/Data/ProveedorData.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\InsumoController' => $baseDir . '/app/Http/Controllers/InsumoController.php',
     'App\\Http\\Controllers\\ProveedorController' => $baseDir . '/app/Http/Controllers/ProveedorController.php',

@@ -523,6 +523,8 @@ class ComposerStaticInit10d79cd3ab322f766a6f2d20d3b434cc
 
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Data\\InsumoData' => __DIR__ . '/../..' . '/app/Data/InsumoData.php',
+        'App\\Data\\ProveedorData' => __DIR__ . '/../..' . '/app/Data/ProveedorData.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\InsumoController' => __DIR__ . '/../..' . '/app/Http/Controllers/InsumoController.php',
         'App\\Http\\Controllers\\ProveedorController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProveedorController.php',
